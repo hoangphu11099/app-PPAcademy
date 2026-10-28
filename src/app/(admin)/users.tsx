@@ -1,3 +1,5 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
 import apiClient from "@/src/api/axios";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
@@ -10,8 +12,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -127,7 +127,7 @@ const Users: React.FC = () => {
     if (u.role === "student") {
       Alert.alert(
         "Không hỗ trợ",
-        "Backend hiện chỉ có xóa giảng viên (DELETE /teachers/:id), chưa có API xóa sinh viên.",
+        "Chức năng xóa hồ sơ sinh viên hiện chưa khả dụng. Vui lòng liên hệ bộ phận quản lý đào tạo để được hỗ trợ.",
       );
       return;
     }
@@ -149,9 +149,7 @@ const Users: React.FC = () => {
               "Xóa thất bại.";
             if (/1451|foreign key|FOREIGN KEY/i.test(detail)) {
               msg =
-                "Không xóa được vì còn dữ liệu liên quan (thông báo / lớp / phân công).\n" +
-                "Khởi động lại backend (đã cập nhật xóa notification) rồi thử lại.\n\n" +
-                detail;
+                "Không thể xóa giảng viên đang có dữ liệu liên quan. Vui lòng kiểm tra lớp học và phân công giảng dạy trước khi thử lại.";
             }
             Alert.alert("Lỗi", msg);
           }
@@ -167,12 +165,12 @@ const Users: React.FC = () => {
         <View
           style={[
             styles.avatar,
-            { backgroundColor: isTeacher ? "#E0E7FF" : "#D1FAE5" },
+            { backgroundColor: isTeacher ? "#DBEAFE" : "#EAF2FF" },
           ]}>
           <Ionicons
             name={isTeacher ? "person" : "school"}
             size={20}
-            color={isTeacher ? "#5B5BD6" : "#059669"}
+            color={isTeacher ? "#2563EB" : "#2563EB"}
           />
         </View>
         <View style={{ flex: 1 }}>
@@ -208,13 +206,13 @@ const Users: React.FC = () => {
           <TouchableOpacity
             style={styles.addBtn}
             onPress={() => router.push("/(admin)/CreateIdStudent")}>
-            <Ionicons name="person-add" size={18} color="#5B5BD6" />
+            <Ionicons name="person-add" size={18} color="#2563EB" />
             <Text style={styles.addText}>SV</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.addBtn}
             onPress={() => router.push("/(admin)/CreateIdTeacher")}>
-            <Ionicons name="person-add" size={18} color="#5B5BD6" />
+            <Ionicons name="person-add" size={18} color="#2563EB" />
             <Text style={styles.addText}>GV</Text>
           </TouchableOpacity>
         </View>
@@ -239,7 +237,7 @@ const Users: React.FC = () => {
             ["teacher", "Giảng viên"],
           ] as const
         ).map(([v, label]) => (
-          <TouchableOpacity
+          <TouchableOpacity selected={Boolean(role === v)}
             key={v}
             style={[styles.chip, role === v && styles.chipOn]}
             onPress={() => setRole(v)}>
@@ -252,7 +250,7 @@ const Users: React.FC = () => {
 
       {loading ? (
         <View style={styles.center}>
-          <ActivityIndicator size="large" color="#5B5BD6" />
+          <ActivityIndicator size="large" color="#2563EB" />
         </View>
       ) : (
         <FlatList
@@ -267,7 +265,7 @@ const Users: React.FC = () => {
                 setRefreshing(true);
                 load();
               }}
-              colors={["#5B5BD6"]}
+              colors={["#2563EB"]}
             />
           }
           ListEmptyComponent={
@@ -282,7 +280,7 @@ const Users: React.FC = () => {
 export default Users;
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F3EEFF" },
+  safe: { flex: 1, backgroundColor: "#F5F8FF" },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -299,12 +297,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
     paddingHorizontal: 10,
     paddingVertical: 8,
     borderRadius: 10,
   },
-  addText: { color: "#5B5BD6", fontWeight: "700", fontSize: 13 },
+  addText: { color: "#2563EB", fontWeight: "700", fontSize: 13 },
   searchRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -332,7 +330,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E5E7EB",
   },
-  chipOn: { backgroundColor: "#5B5BD6", borderColor: "#5B5BD6" },
+  chipOn: { backgroundColor: "#2563EB", borderColor: "#2563EB" },
   chipText: { fontSize: 13, fontWeight: "600", color: "#6B7280" },
   chipTextOn: { color: "#FFF" },
   center: { flex: 1, justifyContent: "center", alignItems: "center" },

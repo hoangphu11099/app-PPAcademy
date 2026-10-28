@@ -1,3 +1,5 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
 import api from "@/src/api/axios";
 import { useLocalSearchParams } from "expo-router";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
@@ -10,8 +12,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -318,7 +318,7 @@ const ManageAssignments = () => {
         </Text>
 
         <View style={styles.filterRow}>
-          <TouchableOpacity
+          <TouchableOpacity selected={Boolean(!onlyPending)}
             style={[styles.filterChip, !onlyPending && styles.filterOn]}
             onPress={() => setOnlyPending(false)}>
             <Text
@@ -326,7 +326,7 @@ const ManageAssignments = () => {
               Tất cả
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          <TouchableOpacity selected={Boolean(onlyPending)}
             style={[styles.filterChip, onlyPending && styles.filterOn]}
             onPress={() => setOnlyPending(true)}>
             <Text
@@ -518,7 +518,7 @@ const ManageAssignments = () => {
                   {classes.map((c) => {
                     const active = classId === c.id;
                     return (
-                      <TouchableOpacity
+                      <TouchableOpacity selected={Boolean(active)}
                         key={c.id}
                         style={[styles.chip, active && styles.chipActive]}
                         onPress={() => setClassId(c.id)}>

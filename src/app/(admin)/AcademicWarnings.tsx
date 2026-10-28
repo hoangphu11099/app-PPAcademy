@@ -1,3 +1,5 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
 import apiClient from "@/src/api/axios";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect, useRouter } from "expo-router";
@@ -12,8 +14,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -392,7 +392,7 @@ export default function AcademicWarnings() {
   const renderCandidate = ({ item }: { item: Candidate }) => {
     const on = selected.has(item.enrollmentId);
     return (
-      <TouchableOpacity
+      <TouchableOpacity selected={Boolean(on)}
         style={[styles.card, on && styles.cardOn]}
         activeOpacity={0.8}
         onPress={() => toggleOne(item.enrollmentId)}>
@@ -435,13 +435,13 @@ export default function AcademicWarnings() {
         <TouchableOpacity
           style={styles.iconBtn}
           onPress={() => setShowGpaGen(true)}>
-          <Ionicons name="calculator-outline" size={22} color="#5B5BD6" />
+          <Ionicons name="calculator-outline" size={22} color="#2563EB" />
         </TouchableOpacity>
       </View>
 
       {/* Tabs */}
       <View style={styles.tabs}>
-        <TouchableOpacity
+        <TouchableOpacity selected={Boolean(tab === "candidates")}
           style={[styles.tab, tab === "candidates" && styles.tabOn]}
           onPress={() => setTab("candidates")}>
           <Text
@@ -449,7 +449,7 @@ export default function AcademicWarnings() {
             Vi phạm & gửi TB
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        <TouchableOpacity selected={Boolean(tab === "saved")}
           style={[styles.tab, tab === "saved" && styles.tabOn]}
           onPress={() => {
             setTab("saved");
@@ -464,7 +464,7 @@ export default function AcademicWarnings() {
       {loading ? (
         <ActivityIndicator
           style={{ marginTop: 40 }}
-          color="#5B5BD6"
+          color="#2563EB"
           size="large"
         />
       ) : tab === "candidates" ? (
@@ -475,7 +475,7 @@ export default function AcademicWarnings() {
             style={styles.filterBar}
             contentContainerStyle={{ paddingHorizontal: 12, gap: 8 }}>
             {semesters.map((s) => (
-              <TouchableOpacity
+              <TouchableOpacity selected={Boolean(semesterId === s.id)}
                 key={s.id}
                 style={[styles.chip, semesterId === s.id && styles.chipOn]}
                 onPress={() => setSemesterId(s.id)}>
@@ -495,7 +495,7 @@ export default function AcademicWarnings() {
             showsHorizontalScrollIndicator={false}
             style={styles.filterBar}
             contentContainerStyle={{ paddingHorizontal: 12, gap: 8 }}>
-            <TouchableOpacity
+            <TouchableOpacity selected={Boolean(!classId)}
               style={[styles.chip, !classId && styles.chipOn]}
               onPress={() => setClassId(null)}>
               <Text style={[styles.chipText, !classId && styles.chipTextOn]}>
@@ -503,7 +503,7 @@ export default function AcademicWarnings() {
               </Text>
             </TouchableOpacity>
             {classes.map((c) => (
-              <TouchableOpacity
+              <TouchableOpacity selected={Boolean(classId === c.id)}
                 key={c.id}
                 style={[styles.chip, classId === c.id && styles.chipOn]}
                 onPress={() => setClassId(c.id)}>
@@ -524,7 +524,7 @@ export default function AcademicWarnings() {
             style={styles.filterBar}
             contentContainerStyle={{ paddingHorizontal: 12, gap: 8 }}>
             {REASON_OPTS.map((r) => (
-              <TouchableOpacity
+              <TouchableOpacity selected={Boolean(reason === r.key)}
                 key={r.key}
                 style={[styles.chip, reason === r.key && styles.chipOn]}
                 onPress={() => setReason(r.key)}>
@@ -577,7 +577,7 @@ export default function AcademicWarnings() {
                   await loadCandidates();
                   setRefreshing(false);
                 }}
-                colors={["#5B5BD6"]}
+                colors={["#2563EB"]}
               />
             }
             ListEmptyComponent={
@@ -630,7 +630,7 @@ export default function AcademicWarnings() {
                 await loadSaved();
                 setRefreshing(false);
               }}
-              colors={["#5B5BD6"]}
+              colors={["#2563EB"]}
             />
           }
           ListEmptyComponent={
@@ -668,7 +668,7 @@ export default function AcademicWarnings() {
           <View style={styles.modal}>
             <Text style={styles.modalTitle}>Tạo cảnh báo theo GPA</Text>
             <Text style={styles.hint}>
-              API generate: GPA &lt; ngưỡng hoặc số môn không đạt vượt mức.
+              Tạo cảnh báo cho sinh viên có GPA dưới ngưỡng hoặc số học phần không đạt vượt mức quy định.
             </Text>
             <Text style={styles.label}>Học kỳ đang chọn</Text>
             <Text style={styles.meta}>
@@ -710,7 +710,7 @@ export default function AcademicWarnings() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F3EEFF" },
+  safe: { flex: 1, backgroundColor: "#F5F8FF" },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -741,7 +741,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F3F4F6",
     alignItems: "center",
   },
-  tabOn: { backgroundColor: "#5B5BD6" },
+  tabOn: { backgroundColor: "#2563EB" },
   tabText: { fontSize: 13, fontWeight: "700", color: "#6B7280" },
   tabTextOn: { color: "#FFF" },
   filterBar: { maxHeight: 44, marginTop: 8 },
@@ -753,7 +753,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E5E7EB",
   },
-  chipOn: { backgroundColor: "#5B5BD6", borderColor: "#5B5BD6" },
+  chipOn: { backgroundColor: "#2563EB", borderColor: "#2563EB" },
   chipText: { fontSize: 12, fontWeight: "600", color: "#374151" },
   chipTextOn: { color: "#FFF" },
   toolbar: {
@@ -770,7 +770,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   loadBtnText: { color: "#FFF", fontWeight: "700", fontSize: 13 },
-  selectAll: { color: "#5B5BD6", fontWeight: "700", fontSize: 13 },
+  selectAll: { color: "#2563EB", fontWeight: "700", fontSize: 13 },
   count: {
     paddingHorizontal: 14,
     paddingVertical: 8,
@@ -789,7 +789,7 @@ const styles = StyleSheet.create({
     gap: 12,
     alignItems: "flex-start",
   },
-  cardOn: { borderColor: "#5B5BD6", backgroundColor: "#F5F3FF" },
+  cardOn: { borderColor: "#2563EB", backgroundColor: "#EFF6FF" },
   check: {
     width: 22,
     height: 22,
@@ -800,7 +800,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 2,
   },
-  checkOn: { backgroundColor: "#5B5BD6", borderColor: "#5B5BD6" },
+  checkOn: { backgroundColor: "#2563EB", borderColor: "#2563EB" },
   name: { fontSize: 15, fontWeight: "700", color: "#1A1A1A" },
   code: { fontWeight: "600", color: "#6B7280", fontSize: 13 },
   meta: { fontSize: 12, color: "#6B7280", marginTop: 3 },
@@ -839,7 +839,7 @@ const styles = StyleSheet.create({
   },
   sendBtn: {
     flex: 1,
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     borderRadius: 14,
     paddingVertical: 14,
     alignItems: "center",
@@ -848,9 +848,9 @@ const styles = StyleSheet.create({
   sendBtnOutline: {
     backgroundColor: "#FFF",
     borderWidth: 1.5,
-    borderColor: "#5B5BD6",
+    borderColor: "#2563EB",
   },
-  sendBtnOutlineText: { color: "#5B5BD6", fontWeight: "700", fontSize: 14 },
+  sendBtnOutlineText: { color: "#2563EB", fontWeight: "700", fontSize: 14 },
   overlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.4)",

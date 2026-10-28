@@ -20,13 +20,13 @@
       [
         "expo-splash-screen",
         {
-          "image": "../assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
+          "backgroundColor": "#F0F6FF",
           "dark": {
-            "backgroundColor": "#000000"
-          }
+            "backgroundColor": "#102C51"
+          },
+          "image": "./src/assets/brand/pp-academy-logo.png"
         }
       ],
       "expo-secure-store",
@@ -34,7 +34,8 @@
       "expo-image",
       "expo-status-bar",
       "expo-web-browser",
-      "expo-sharing"
+      "expo-sharing",
+      "expo-video"
     ],
     "experiments": {
       "typedRoutes": true,

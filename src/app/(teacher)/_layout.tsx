@@ -1,3 +1,4 @@
+import { interaction } from "../../theme/interaction";
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
@@ -8,7 +9,8 @@ export default function TeacherLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#5B5BD6",
+        tabBarIconStyle: { width: 48, height: 34 },
+        tabBarActiveTintColor: "#2563EB",
         tabBarInactiveTintColor: "#9CA3AF",
         tabBarStyle: styles.tabBar,
         tabBarLabelStyle: styles.tabLabel,
@@ -21,7 +23,7 @@ export default function TeacherLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               name={focused ? "home" : "home-outline"}
-              color={color}
+              color={typeof color === "string" ? color : "#9CA3AF"}
               focused={focused}
             />
           ),
@@ -29,13 +31,13 @@ export default function TeacherLayout() {
       />
 
       <Tabs.Screen
-        name="Attendance"
+        name="attendance"
         options={{
           title: "Điểm danh",
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               name={focused ? "qr-code" : "qr-code-outline"}
-              color={color}
+              color={typeof color === "string" ? color : "#9CA3AF"}
               focused={focused}
             />
           ),
@@ -43,13 +45,13 @@ export default function TeacherLayout() {
       />
 
       <Tabs.Screen
-        name="Grades"
+        name="grades"
         options={{
           title: "Điểm số",
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               name={focused ? "bar-chart" : "bar-chart-outline"}
-              color={color}
+              color={typeof color === "string" ? color : "#9CA3AF"}
               focused={focused}
             />
           ),
@@ -63,7 +65,7 @@ export default function TeacherLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               name={focused ? "document-text" : "document-text-outline"}
-              color={color}
+              color={typeof color === "string" ? color : "#9CA3AF"}
               focused={focused}
             />
           ),
@@ -77,7 +79,7 @@ export default function TeacherLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               name={focused ? "person" : "person-outline"}
-              color={color}
+              color={typeof color === "string" ? color : "#9CA3AF"}
               focused={focused}
             />
           ),
@@ -86,15 +88,19 @@ export default function TeacherLayout() {
 
       <Tabs.Screen
         name="Notification"
-        options={{ href: null, headerShown: false, title: "Thông báo" }}
+        options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" }, headerShown: false, title: "Thông báo" }}
       />
       <Tabs.Screen
         name="ViewTeachingSchedule"
-        options={{ href: null, headerShown: false }}
+        options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" }, headerShown: false }}
       />
       <Tabs.Screen
         name="class-offers"
-        options={{ href: null, headerShown: false }}
+        options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" }, headerShown: false }}
+      />
+      <Tabs.Screen
+        name="StudentDetail"
+        options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" }, headerShown: false }}
       />
     </Tabs>
   );
@@ -110,8 +116,8 @@ function TabIcon({
   focused: boolean;
 }) {
   return (
-    <View style={[styles.iconWrap, focused && styles.iconWrapActive]}>
-      <Ionicons name={name} size={22} color={color} />
+    <View style={[styles.iconWrap, focused && styles.iconWrapActive, focused && interaction.glow]}>
+      <Ionicons name={name} size={22} color={typeof color === "string" ? color : "#9CA3AF"} />
     </View>
   );
 }
@@ -146,6 +152,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   iconWrapActive: {
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
   },
 });

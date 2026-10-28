@@ -1,3 +1,4 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
 import apiClient from "@/src/api/axios";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect, useRouter } from "expo-router";
@@ -9,7 +10,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -143,15 +143,15 @@ const Reports = () => {
       icon: "school-outline" as const,
       color: "#2563EB",
       bg: "#DBEAFE",
-      route: "/(admin)/Users",
+      route: "/(admin)/users",
     },
     {
       label: "Giảng viên",
       value: stats.totalTeachers,
       icon: "person-outline" as const,
-      color: "#5B5BD6",
-      bg: "#EDE9FE",
-      route: "/(admin)/Users",
+      color: "#2563EB",
+      bg: "#EAF2FF",
+      route: "/(admin)/users",
     },
     {
       label: "Lớp học",
@@ -173,17 +173,17 @@ const Reports = () => {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top"]}>
-      <StatusBar barStyle="dark-content" backgroundColor="#F3EEFF" />
+      <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Báo cáo thống kê</Text>
         <TouchableOpacity style={styles.refreshBtn} onPress={onRefresh}>
-          <Ionicons name="refresh" size={20} color="#5B5BD6" />
+          <Ionicons name="refresh" size={20} color="#2563EB" />
         </TouchableOpacity>
       </View>
 
       {loading ? (
         <View style={styles.center}>
-          <ActivityIndicator size="large" color="#5B5BD6" />
+          <ActivityIndicator size="large" color="#2563EB" />
         </View>
       ) : (
         <ScrollView
@@ -193,8 +193,8 @@ const Reports = () => {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              colors={["#5B5BD6"]}
-              tintColor="#5B5BD6"
+              colors={["#2563EB"]}
+              tintColor="#2563EB"
             />
           }>
           <Text style={styles.sectionTitle}>Tổng quan hệ thống</Text>
@@ -214,7 +214,7 @@ const Reports = () => {
                 <Ionicons
                   name="chevron-forward"
                   size={14}
-                  color="#C4B5FD"
+                  color="#94B8EF"
                   style={styles.cardChevron}
                 />
               </TouchableOpacity>
@@ -251,10 +251,10 @@ const Reports = () => {
           <View style={styles.metricCard}>
             <View style={styles.metricRow}>
               <View style={styles.metricLeft}>
-                <Ionicons name="stats-chart" size={20} color="#5B5BD6" />
+                <Ionicons name="stats-chart" size={20} color="#2563EB" />
                 <Text style={styles.metricLabel}>GPA trung bình</Text>
               </View>
-              <Text style={[styles.metricValue, { color: "#5B5BD6" }]}>
+              <Text style={[styles.metricValue, { color: "#2563EB" }]}>
                 {stats.avgGpa ? stats.avgGpa.toFixed(2) : "—"}
               </Text>
             </View>
@@ -265,7 +265,7 @@ const Reports = () => {
                     styles.progressFill,
                     {
                       width: `${(stats.avgGpa / 4) * 100}%`,
-                      backgroundColor: "#5B5BD6",
+                      backgroundColor: "#2563EB",
                     },
                   ]}
                 />
@@ -292,29 +292,29 @@ const Reports = () => {
           <Text style={styles.sectionTitle}>Thao tác nhanh</Text>
           <TouchableOpacity
             style={styles.actionCard}
-            onPress={() => go("/(admin)/Users")}>
-            <Ionicons name="people-outline" size={20} color="#5B5BD6" />
+            onPress={() => go("/(admin)/users")}>
+            <Ionicons name="people-outline" size={20} color="#2563EB" />
             <Text style={styles.actionText}>Xem danh sách người dùng</Text>
             <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.actionCard}
             onPress={() => go("/(admin)/ClassList")}>
-            <Ionicons name="albums-outline" size={20} color="#5B5BD6" />
+            <Ionicons name="albums-outline" size={20} color="#2563EB" />
             <Text style={styles.actionText}>Danh sách lớp học</Text>
             <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.actionCard}
             onPress={() => go("/(admin)/Courses")}>
-            <Ionicons name="book-outline" size={20} color="#5B5BD6" />
+            <Ionicons name="book-outline" size={20} color="#2563EB" />
             <Text style={styles.actionText}>Quản lý môn học</Text>
             <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.actionCard}
-            onPress={() => go("/(admin)/Exams")}>
-            <Ionicons name="clipboard-outline" size={20} color="#5B5BD6" />
+            onPress={() => go("/(admin)/exams")}>
+            <Ionicons name="clipboard-outline" size={20} color="#2563EB" />
             <Text style={styles.actionText}>Quản lý kỳ thi</Text>
             <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
           </TouchableOpacity>
@@ -327,7 +327,7 @@ const Reports = () => {
 export default Reports;
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#F3EEFF" },
+  safeArea: { flex: 1, backgroundColor: "#F5F8FF" },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -430,7 +430,7 @@ const styles = StyleSheet.create({
   progressFill: { height: "100%", borderRadius: 4 },
   linkText: {
     marginTop: 10,
-    color: "#5B5BD6",
+    color: "#2563EB",
     fontWeight: "700",
     fontSize: 13,
   },

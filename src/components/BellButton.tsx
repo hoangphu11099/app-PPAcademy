@@ -1,3 +1,4 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
 import { pollAndNotifyLocal } from "@/src/utils/localPush";
 import { getUnreadCount } from "@/src/utils/notificationBadge";
 import { Ionicons } from "@expo/vector-icons";
@@ -6,7 +7,6 @@ import React, { useCallback, useRef, useState } from "react";
 import {
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   ViewStyle,
 } from "react-native";

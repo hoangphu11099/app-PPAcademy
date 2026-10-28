@@ -1,7 +1,10 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
+import { SchoolLogo } from "../../components/SchoolLogo";
 import { useAuth } from "@/src/context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -14,13 +17,12 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { loginAPI } from "../../api/authApi";
 import { setApiToken } from "../../api/axios";
+import { interaction } from "../../theme/interaction";
 
 const { width } = Dimensions.get("window");
 
@@ -30,18 +32,19 @@ const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [focusedField, setFocusedField] = useState<"username" | "password" | null>(null);
   const [lightOn, setLightOn] = useState(false);
   const router = useRouter();
   const { login: authLogin } = useAuth();
 
-  const fade = useRef(new Animated.Value(0)).current;
-  const slide = useRef(new Animated.Value(28)).current;
-  const btnScale = useRef(new Animated.Value(1)).current;
-  const lampGlow = useRef(new Animated.Value(0)).current;
-  const theme = useRef(new Animated.Value(0)).current;
-  const toggleScale = useRef(new Animated.Value(1)).current;
-  const swing = useRef(new Animated.Value(0)).current;
-  const borderSpin = useRef(new Animated.Value(0)).current;
+  const [fade] = useState(() => new Animated.Value(0));
+  const [slide] = useState(() => new Animated.Value(28));
+  const [btnScale] = useState(() => new Animated.Value(1));
+  const [lampGlow] = useState(() => new Animated.Value(0));
+  const [theme] = useState(() => new Animated.Value(0));
+  const [toggleScale] = useState(() => new Animated.Value(1));
+  const [swing] = useState(() => new Animated.Value(0));
+  const [borderSpin] = useState(() => new Animated.Value(0));
 
   useEffect(() => {
     Animated.parallel([
@@ -184,6 +187,15 @@ const LoginScreen = () => {
         router.replace("/(teacher)/DashboardTeacher" as any);
       else router.replace("/(student)/DashboardStudent" as any);
     } catch (e: any) {
+      if (!e?.response && e?.request) {
+        Alert.alert(
+          "Không kết nối được máy chủ",
+          e.code === "ECONNABORTED" || e.code === "ETIMEDOUT"
+            ? "Máy chủ phản hồi quá lâu. Kiểm tra backend đã chạy và điện thoại cùng mạng Wi-Fi với máy chủ."
+            : "Không thể kết nối API. Kiểm tra địa chỉ máy chủ, backend và kết nối Wi-Fi.",
+        );
+        return;
+      }
       const msg =
         e?.response?.data?.message ||
         e?.response?.data?.error ||
@@ -255,9 +267,7 @@ const LoginScreen = () => {
               {/* ===== BRAND ===== */}
               <View style={styles.brandBlock}>
                 <View style={styles.logoRow}>
-                  <View style={styles.logoCircle}>
-                    <Text style={styles.logoLetters}>PP</Text>
-                  </View>
+                  <SchoolLogo size={56} />
                   <View>
                     <Animated.Text
                       style={[styles.brandName, { color: brandTitleColor }]}>
@@ -424,9 +434,12 @@ const LoginScreen = () => {
                     Sử dụng tài khoản được nhà trường cấp để tiếp tục.
                   </Text>
 
-                  <Text style={styles.label}>Tên đăng nhập hoặc email</Text>
-                  <View style={styles.inputWrap}>
+                  <Text style={[styles.label, focusedField === "username" && styles.labelFocused]}>Tên đăng nhập hoặc email</Text>
+                  <View style={[styles.inputWrap, focusedField === "username" && interaction.inputFocus, focusedField === "username" && interaction.glow]}>
                     <TextInput
+                      glowEnabled={false}
+                      onFocus={() => setFocusedField("username")}
+                      onBlur={() => setFocusedField(null)}
                       style={styles.input}
                       placeholder="Nhập tên đăng nhập hoặc email"
                       placeholderTextColor="#94A3B8"
@@ -438,9 +451,12 @@ const LoginScreen = () => {
                     />
                   </View>
 
-                  <Text style={styles.label}>Mật khẩu</Text>
-                  <View style={styles.inputWrap}>
+                  <Text style={[styles.label, focusedField === "password" && styles.labelFocused]}>Mật khẩu</Text>
+                  <View style={[styles.inputWrap, focusedField === "password" && interaction.inputFocus, focusedField === "password" && interaction.glow]}>
                     <TextInput
+                      glowEnabled={false}
+                      onFocus={() => setFocusedField("password")}
+                      onBlur={() => setFocusedField(null)}
                       style={styles.input}
                       placeholder="Nhập mật khẩu"
                       placeholderTextColor="#94A3B8"
@@ -456,7 +472,7 @@ const LoginScreen = () => {
                       <Ionicons
                         name={showPassword ? "eye-off-outline" : "eye-outline"}
                         size={20}
-                        color="#64748B"
+                        color={focusedField === "password" ? "#2563EB" : "#64748B"}
                       />
                     </TouchableOpacity>
                   </View>
@@ -464,6 +480,8 @@ const LoginScreen = () => {
                   <View style={styles.rowBetween}>
                     <TouchableOpacity
                       style={styles.rememberRow}
+                      accessibilityRole="checkbox"
+                      accessibilityState={{ checked: remember }}
                       onPress={() => setRemember((v) => !v)}
                       activeOpacity={0.8}>
                       <View
@@ -487,7 +505,7 @@ const LoginScreen = () => {
 
                   <Animated.View style={{ transform: [{ scale: btnScale }] }}>
                     <TouchableOpacity
-                      style={styles.loginBtn}
+                      style={[styles.loginBtn, loading && { opacity: 0.6 }]}
                       onPress={handleLogin}
                       onPressIn={pressIn}
                       onPressOut={pressOut}
@@ -718,6 +736,7 @@ const styles = StyleSheet.create({
     color: "#334155",
     marginBottom: 8,
   },
+  labelFocused: { color: "#2563EB" },
   inputWrap: {
     flexDirection: "row",
     alignItems: "center",
@@ -753,13 +772,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   checkboxOn: {
-    backgroundColor: "#0F172A",
-    borderColor: "#0F172A",
+    backgroundColor: "#2563EB",
+    borderColor: "#2563EB",
   },
   rememberText: { fontSize: 13, color: "#475569" },
   forgot: { fontSize: 13, fontWeight: "600", color: "#3B82F6" },
   loginBtn: {
-    backgroundColor: "#0F172A",
+    backgroundColor: "#2563EB",
     borderRadius: 12,
     paddingVertical: 15,
     flexDirection: "row",

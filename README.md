@@ -1,5 +1,15 @@
 # Welcome to your Expo app 👋
 
+## Đồng bộ trang chủ với web
+
+- Đặt `EXPO_PUBLIC_API_URL` trong `.env.local` trỏ tới **cùng backend với web**; xem `.env.example`. Điện thoại cần truy cập được địa chỉ này qua mạng LAN hoặc HTTPS.
+- Đặt `EXPO_PUBLIC_WEBSITE_URL` là địa chỉ web để mở các đường dẫn ảnh tương đối do quản trị viên nhập. Logo và ảnh mặc định được đóng gói sẵn trong app.
+- Trang chủ giữ bố cục một màn hình: video nền toàn màn hình, logo, lời chào, nút đăng nhập, nút ngành học và các nút chọn video. Trang ngành học riêng sử dụng API `/public/*` cho thông tin trường, nội dung ngành học, giảng viên và đăng ký tư vấn; hỗ trợ kéo để làm mới và thông báo khi mất kết nối.
+- Chạy `npm run sync:website` sau khi đổi video, ảnh hoặc nội dung mặc định trong `../web_dashboard`. Lệnh sao chép đúng các MP4, thứ tự video, logo và dữ liệu mặc định; `npm run check:website` kiểm tra chúng còn khớp byte với web. Nội dung trường chỉnh qua API được lấy trực tiếp, không cần sao chép.
+- App dùng `expo-video`. Nếu dùng development build đã có từ trước, cần build lại (`npm run android` hoặc `npm run ios`) để nhận native module, splash mới. Đây là thay đổi mã nguồn, chưa phát hành bản cài đặt.
+
+Kiểm tra thủ công trên thiết bị: chuyển đủ 5 video, tự chuyển sau khi phát hết, tạm dừng khi rời trang/ẩn app; mở bài viết; tìm ngành có/không dấu và lọc nhóm; xem lộ trình; gửi tư vấn và kiểm tra trong hộp thư tư vấn quản trị trên web; thử mất mạng và kéo để tải lại. Nội dung mẫu ở Góc sinh viên luôn được ghi rõ là minh họa khi trường chưa xuất bản câu chuyện.
+
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
 ## Get started

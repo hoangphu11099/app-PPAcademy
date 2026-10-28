@@ -1,3 +1,4 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
 import BellButton from "@/src/components/BellButton";
 import { useFocusEffect, useRouter } from "expo-router";
 import React, { useCallback, useState } from "react";
@@ -7,7 +8,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { getTeacherDashboardAPI } from "../../api/authApi";
@@ -71,13 +71,13 @@ const DashboardTeacher = () => {
       value: data.classes,
       color: "#2563eb",
       bg: "#eff6ff",
-      route: "/(teacher)/Grades",
+      route: "/(teacher)/grades",
     },
     {
       label: "Lớp chờ phản hồi",
       value: data.pendingClassOffers,
-      color: "#7c3aed",
-      bg: "#f5f3ff",
+      color: "#2563EB",
+      bg: "#EFF6FF",
       route: "/(teacher)/class-offers",
     },
     {
@@ -106,14 +106,14 @@ const DashboardTeacher = () => {
     {
       title: "Điểm danh",
       desc: "Tạo QR / xem & sửa điểm danh",
-      route: "/(teacher)/Attendance",
+      route: "/(teacher)/attendance",
       color: "#2563eb",
     },
     {
       title: "Nhập điểm",
       desc: "Quản lý điểm lớp học phần",
-      route: "/(teacher)/Grades",
-      color: "#059669",
+      route: "/(teacher)/grades",
+      color: "#2563EB",
     },
     {
       title: "Bài tập",
@@ -125,7 +125,7 @@ const DashboardTeacher = () => {
       title: "Đề xuất lớp",
       desc: "Xem / nhận lớp được phân công",
       route: "/(teacher)/class-offers",
-      color: "#7c3aed",
+      color: "#2563EB",
     },
   ];
 

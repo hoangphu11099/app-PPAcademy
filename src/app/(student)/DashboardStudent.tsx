@@ -1,3 +1,4 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
 import BellButton from "@/src/components/BellButton";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -10,7 +11,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -85,32 +85,32 @@ const DashboardStudent = () => {
       label: "Học phần đang học",
       value: data.enrolledCourses,
       icon: "book" as const,
-      color: "#5B5BD6",
-      bg: "#EDE9FE",
+      color: "#2563EB",
+      bg: "#EAF2FF",
       route: "/(student)/RegisterCourses",
     },
     {
       label: "Bài tập đang mở",
       value: data.openExercises,
       icon: "document-text" as const,
-      color: "#D97706",
-      bg: "#FEF3C7",
+      color: "#2563EB",
+      bg: "#EAF2FF",
       route: "/(student)/StudentExercises",
     },
     {
       label: "Bài đã nộp",
       value: data.submissions,
       icon: "checkmark-done" as const,
-      color: "#7C3AED",
-      bg: "#F5F3FF",
+      color: "#2563EB",
+      bg: "#EFF6FF",
       route: "/(student)/StudentSubmissions",
     },
     {
       label: "Lượt điểm danh",
       value: data.attendances,
       icon: "qr-code" as const,
-      color: "#059669",
-      bg: "#D1FAE5",
+      color: "#2563EB",
+      bg: "#EAF2FF",
       route: "/(student)/QrAttendance",
     },
   ];
@@ -121,28 +121,28 @@ const DashboardStudent = () => {
       desc: "Xem lớp đang mở & đăng ký",
       route: "/(student)/RegisterCourses",
       icon: "school-outline" as const,
-      color: "#5B5BD6",
+      color: "#2563EB",
     },
     {
       title: "Thời khóa biểu",
       desc: "Xem lịch học trong tuần",
       route: "/(student)/ViewSchedule",
       icon: "calendar-outline" as const,
-      color: "#059669",
+      color: "#2563EB",
     },
     {
       title: "Bảng điểm",
       desc: "Xem điểm & GPA",
       route: "/(student)/ViewTranscript",
       icon: "stats-chart-outline" as const,
-      color: "#D97706",
+      color: "#2563EB",
     },
     {
       title: "Điểm danh QR",
       desc: "Quét mã điểm danh",
       route: "/(student)/QrAttendance",
       icon: "qr-code-outline" as const,
-      color: "#7C3AED",
+      color: "#2563EB",
     },
     {
       title: "Cảnh báo học vụ",
@@ -156,14 +156,14 @@ const DashboardStudent = () => {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#5B5BD6" />
+        <ActivityIndicator size="large" color="#2563EB" />
       </View>
     );
   }
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" backgroundColor="#F3EEFF" />
+      <StatusBar barStyle="dark-content" />
       <ScrollView
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
@@ -171,8 +171,8 @@ const DashboardStudent = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={["#5B5BD6"]}
-            tintColor="#5B5BD6"
+            colors={["#2563EB"]}
+            tintColor="#2563EB"
           />
         }>
         <View style={styles.header}>
@@ -183,7 +183,7 @@ const DashboardStudent = () => {
             <Text style={styles.name}>Sinh viên</Text>
           </View>
           <BellButton
-            onPress={() => router.push("/(student)/Notification" as any)}
+            onPress={() => router.push("/(student)/notification" as any)}
           />
         </View>
 
@@ -238,12 +238,12 @@ const DashboardStudent = () => {
 export default DashboardStudent;
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#F3EEFF" },
+  safeArea: { flex: 1, backgroundColor: "#F5F8FF" },
   center: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F3EEFF",
+    backgroundColor: "#F5F8FF",
   },
   content: { padding: 20, paddingBottom: 36 },
   header: {

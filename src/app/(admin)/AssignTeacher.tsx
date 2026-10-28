@@ -1,3 +1,5 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
 import apiClient from "@/src/api/axios";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -13,8 +15,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -241,7 +241,7 @@ const AssignTeacher: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top"]}>
-      <StatusBar barStyle="dark-content" backgroundColor="#F3EEFF" />
+      <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
           <Ionicons name="arrow-back" size={22} color="#1A1A1A" />
@@ -257,7 +257,7 @@ const AssignTeacher: React.FC = () => {
           contentContainerStyle={styles.scroll}
           keyboardShouldPersistTaps="handled">
           <View style={styles.banner}>
-            <Ionicons name="information-circle" size={20} color="#5B5BD6" />
+            <Ionicons name="information-circle" size={20} color="#2563EB" />
             <Text style={styles.bannerText}>
               Tạo lời mời phân công. GV nhận ngay trong Đề xuất lớp và chuông
               thông báo.
@@ -265,7 +265,7 @@ const AssignTeacher: React.FC = () => {
           </View>
 
           {loadingMeta ? (
-            <ActivityIndicator color="#5B5BD6" style={{ marginVertical: 20 }} />
+            <ActivityIndicator color="#2563EB" style={{ marginVertical: 20 }} />
           ) : (
             <>
               <Text style={styles.label}>Lớp học *</Text>
@@ -339,7 +339,7 @@ const AssignTeacher: React.FC = () => {
 export default AssignTeacher;
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#F3EEFF" },
+  safeArea: { flex: 1, backgroundColor: "#F5F8FF" },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -366,12 +366,12 @@ const styles = StyleSheet.create({
   banner: {
     flexDirection: "row",
     gap: 8,
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
     borderRadius: 12,
     padding: 12,
     marginBottom: 18,
   },
-  bannerText: { flex: 1, fontSize: 12.5, color: "#4C1D95", lineHeight: 18 },
+  bannerText: { flex: 1, fontSize: 12.5, color: "#1E3A8A", lineHeight: 18 },
   label: {
     fontSize: 13,
     fontWeight: "600",
@@ -405,7 +405,7 @@ const styles = StyleSheet.create({
   area: { height: 100, paddingTop: 12 },
   button: {
     marginTop: 12,
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     borderRadius: 14,
     paddingVertical: 16,
     alignItems: "center",

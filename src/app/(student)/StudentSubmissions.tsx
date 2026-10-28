@@ -1,3 +1,4 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
 import { getMySubmissionsAPI } from "@/src/api/authApi";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -9,7 +10,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -80,7 +80,7 @@ const StudentSubmissions: React.FC = () => {
 
       {loading ? (
         <View style={styles.center}>
-          <ActivityIndicator size="large" color="#5B5BD6" />
+          <ActivityIndicator size="large" color="#2563EB" />
         </View>
       ) : (
         <FlatList
@@ -94,7 +94,7 @@ const StudentSubmissions: React.FC = () => {
                 setRefreshing(true);
                 load();
               }}
-              colors={["#5B5BD6"]}
+              colors={["#2563EB"]}
             />
           }
           ListEmptyComponent={
@@ -126,7 +126,7 @@ const StudentSubmissions: React.FC = () => {
 export default StudentSubmissions;
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F3EEFF" },
+  safe: { flex: 1, backgroundColor: "#F5F8FF" },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -161,11 +161,11 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   badge: {
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 10,
   },
-  badgeText: { color: "#5B5BD6", fontWeight: "700", fontSize: 12 },
+  badgeText: { color: "#2563EB", fontWeight: "700", fontSize: 12 },
   score: { fontWeight: "700", color: "#059669" },
 });

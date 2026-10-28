@@ -1,3 +1,4 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
 import { logoutAPI } from "@/src/api/authApi";
 import apiClient from "@/src/api/axios";
 import { useAuth } from "@/src/context/AuthContext";
@@ -12,7 +13,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -148,6 +148,7 @@ const DashboardAdmin = () => {
   ];
 
   const mainActions = [
+    { id: "registrations", label: "Sinh viên đăng ký học phần", route: "/(admin)/CourseRegistrations", icon: "school-outline" as const },
     {
       id: "assign",
       label: "Phân công giảng viên",
@@ -163,7 +164,7 @@ const DashboardAdmin = () => {
     {
       id: "users",
       label: "Quản lý người dùng",
-      route: "/(admin)/Users",
+      route: "/(admin)/users",
       icon: "person-outline" as const,
     },
     {
@@ -175,13 +176,13 @@ const DashboardAdmin = () => {
     {
       id: "exams",
       label: "Quản lý kỳ thi",
-      route: "/(admin)/Exams",
+      route: "/(admin)/exams",
       icon: "clipboard-outline" as const,
     },
     {
       id: "reports",
       label: "Báo cáo thống kê",
-      route: "/(admin)/Reports",
+      route: "/(admin)/reports",
       icon: "stats-chart-outline" as const,
     },
     {
@@ -233,14 +234,14 @@ const DashboardAdmin = () => {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#5B5BD6" />
+        <ActivityIndicator size="large" color="#2563EB" />
       </View>
     );
   }
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" backgroundColor="#F3EEFF" />
+      <StatusBar barStyle="dark-content" />
 
       <View style={styles.header}>
         <View>
@@ -249,7 +250,7 @@ const DashboardAdmin = () => {
         </View>
         <View style={styles.headerRight}>
           <TouchableOpacity style={styles.refreshBtn} onPress={onRefresh}>
-            <Ionicons name="refresh" size={20} color="#5B5BD6" />
+            <Ionicons name="refresh" size={20} color="#2563EB" />
           </TouchableOpacity>
         </View>
       </View>
@@ -262,8 +263,8 @@ const DashboardAdmin = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={["#5B5BD6"]}
-            tintColor="#5B5BD6"
+            colors={["#2563EB"]}
+            tintColor="#2563EB"
           />
         }>
         <HomeScreen role="admin" embedded />
@@ -314,7 +315,7 @@ const DashboardAdmin = () => {
             activeOpacity={0.7}
             onPress={() => goTo(item.route)}>
             <View style={styles.actionLeft}>
-              <Ionicons name={item.icon} size={20} color="#5B5BD6" />
+              <Ionicons name={item.icon} size={20} color="#2563EB" />
               <Text style={styles.actionText}>{item.label}</Text>
             </View>
             <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
@@ -347,13 +348,13 @@ export default DashboardAdmin;
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#F3EEFF",
+    backgroundColor: "#F5F8FF",
   },
   center: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F3EEFF",
+    backgroundColor: "#F5F8FF",
   },
   header: {
     flexDirection: "row",
@@ -384,7 +385,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -421,7 +422,7 @@ const styles = StyleSheet.create({
   },
   statHint: {
     fontSize: 12,
-    color: "#5B5BD6",
+    color: "#2563EB",
     marginTop: 6,
     fontWeight: "600",
   },

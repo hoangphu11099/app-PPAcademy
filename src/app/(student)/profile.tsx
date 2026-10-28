@@ -1,3 +1,4 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
 import { useAuth } from "@/src/context/AuthContext";
 import {
   loadAvatarUri,
@@ -14,7 +15,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -84,7 +84,7 @@ const Profile = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" backgroundColor="#F3EEFF" />
+      <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Hồ sơ</Text>
       </View>
@@ -125,7 +125,7 @@ const Profile = () => {
               activeOpacity={0.6}>
               <View style={styles.menuLeft}>
                 <View style={styles.menuIconWrap}>
-                  <Ionicons name={item.icon} size={20} color="#5B5BD6" />
+                  <Ionicons name={item.icon} size={20} color="#2563EB" />
                 </View>
                 <Text style={styles.menuLabel}>{item.label}</Text>
               </View>
@@ -149,7 +149,7 @@ const Profile = () => {
 export default Profile;
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#F3EEFF" },
+  safeArea: { flex: 1, backgroundColor: "#F5F8FF" },
   header: {
     paddingHorizontal: 20,
     paddingVertical: 16,
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 2,
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 10,
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
     justifyContent: "center",
     alignItems: "center",
   },

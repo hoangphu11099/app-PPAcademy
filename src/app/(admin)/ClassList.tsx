@@ -1,3 +1,5 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
 import apiClient from "@/src/api/axios";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -9,8 +11,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -104,7 +104,7 @@ const ClassList: React.FC = () => {
 
       {loading ? (
         <View style={styles.center}>
-          <ActivityIndicator size="large" color="#5B5BD6" />
+          <ActivityIndicator size="large" color="#2563EB" />
         </View>
       ) : (
         <FlatList
@@ -118,7 +118,7 @@ const ClassList: React.FC = () => {
                 setRefreshing(true);
                 load();
               }}
-              colors={["#5B5BD6"]}
+              colors={["#2563EB"]}
             />
           }
           ListEmptyComponent={
@@ -149,7 +149,7 @@ const ClassList: React.FC = () => {
 export default ClassList;
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F3EEFF" },
+  safe: { flex: 1, backgroundColor: "#F5F8FF" },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     minWidth: 40,
     textAlign: "center",
     fontWeight: "800",
-    color: "#5B5BD6",
+    color: "#2563EB",
   },
   search: {
     flexDirection: "row",

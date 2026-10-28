@@ -1,3 +1,5 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
 import { getStudentExercisesAPI, submitExerciseAPI } from "@/src/api/authApi";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -11,8 +13,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -117,7 +117,7 @@ const StudentExercises: React.FC = () => {
 
       {loading ? (
         <View style={styles.center}>
-          <ActivityIndicator size="large" color="#5B5BD6" />
+          <ActivityIndicator size="large" color="#2563EB" />
         </View>
       ) : (
         <FlatList
@@ -131,7 +131,7 @@ const StudentExercises: React.FC = () => {
                 setRefreshing(true);
                 load();
               }}
-              colors={["#5B5BD6"]}
+              colors={["#2563EB"]}
             />
           }
           ListEmptyComponent={
@@ -220,7 +220,7 @@ const StudentExercises: React.FC = () => {
 export default StudentExercises;
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F3EEFF" },
+  safe: { flex: 1, backgroundColor: "#F5F8FF" },
   header: {
     flexDirection: "row",
     alignItems: "center",

@@ -1,3 +1,5 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -8,9 +10,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+  } from "react-native";
 import api from "../../api/axios";
 
 const ForgotPasswordScreen = () => {

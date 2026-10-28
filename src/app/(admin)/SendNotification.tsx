@@ -1,3 +1,5 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
 import apiClient from "@/src/api/axios";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -12,8 +14,6 @@ import {
   StyleSheet,
   Switch,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -212,7 +212,7 @@ const SendNotification: React.FC = () => {
       if (recipients.length === 0) {
         Alert.alert(
           "Không có người nhận",
-          "API /students hoặc /teachers không trả userId.",
+          "Chưa tìm thấy tài khoản của người nhận. Vui lòng kiểm tra lại hồ sơ.",
         );
         return;
       }
@@ -245,7 +245,7 @@ const SendNotification: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.safe} edges={["top"]}>
-      <StatusBar barStyle="dark-content" backgroundColor="#F3EEFF" />
+      <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.back}>
           <Ionicons name="arrow-back" size={22} color="#1A1A1A" />
@@ -265,16 +265,16 @@ const SendNotification: React.FC = () => {
             {TARGETS.map((t) => {
               const on = target === t.key;
               return (
-                <TouchableOpacity
+                <TouchableOpacity selected={Boolean(on)}
                   key={t.key}
                   style={[styles.chip, on && styles.chipOn]}
                   onPress={() => setTarget(t.key)}>
                   <Ionicons
                     name={t.icon}
                     size={18}
-                    color={on ? "#5B5BD6" : "#6B7280"}
+                    color={on ? "#2563EB" : "#6B7280"}
                   />
-                  <Text style={[styles.chipLabel, on && { color: "#5B5BD6" }]}>
+                  <Text style={[styles.chipLabel, on && { color: "#2563EB" }]}>
                     {t.label}
                   </Text>
                   <Text style={styles.chipDesc}>{t.desc}</Text>
@@ -334,8 +334,8 @@ const SendNotification: React.FC = () => {
             <Switch
               value={sendNow}
               onValueChange={setSendNow}
-              trackColor={{ false: "#D1D5DB", true: "#C4B5FD" }}
-              thumbColor={sendNow ? "#5B5BD6" : "#F3F4F6"}
+              trackColor={{ false: "#D1D5DB", true: "#94B8EF" }}
+              thumbColor={sendNow ? "#2563EB" : "#F3F4F6"}
             />
           </View>
 
@@ -363,7 +363,7 @@ const SendNotification: React.FC = () => {
 export default SendNotification;
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F3EEFF" },
+  safe: { flex: 1, backgroundColor: "#F5F8FF" },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -388,16 +388,16 @@ const styles = StyleSheet.create({
   banner: {
     flexDirection: "row",
     gap: 8,
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
     borderRadius: 12,
     padding: 12,
     marginBottom: 16,
   },
-  bannerText: { flex: 1, fontSize: 12.5, color: "#4C1D95", lineHeight: 18 },
+  bannerText: { flex: 1, fontSize: 12.5, color: "#1E3A8A", lineHeight: 18 },
   section: {
     fontSize: 12,
     fontWeight: "700",
-    color: "#5B5BD6",
+    color: "#2563EB",
     textTransform: "uppercase",
     marginBottom: 10,
   },
@@ -411,7 +411,7 @@ const styles = StyleSheet.create({
     padding: 12,
     gap: 4,
   },
-  chipOn: { borderColor: "#5B5BD6", backgroundColor: "#F5F3FF" },
+  chipOn: { borderColor: "#2563EB", backgroundColor: "#EFF6FF" },
   chipLabel: { fontSize: 14, fontWeight: "700", color: "#374151" },
   chipDesc: { fontSize: 11, color: "#9CA3AF" },
   label: {
@@ -446,7 +446,7 @@ const styles = StyleSheet.create({
   switchTitle: { fontSize: 15, fontWeight: "600" },
   switchDesc: { fontSize: 12, color: "#9CA3AF", marginTop: 2 },
   btn: {
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     borderRadius: 14,
     paddingVertical: 16,
     flexDirection: "row",

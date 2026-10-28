@@ -1,3 +1,5 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
 import apiClient from "@/src/api/axios";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useCallback, useEffect, useState } from "react";
@@ -11,8 +13,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -340,7 +340,7 @@ const Exams: React.FC = () => {
 
       {loading ? (
         <View style={styles.center}>
-          <ActivityIndicator size="large" color="#5B5BD6" />
+          <ActivityIndicator size="large" color="#2563EB" />
         </View>
       ) : (
         <FlatList
@@ -354,7 +354,7 @@ const Exams: React.FC = () => {
                 setRefreshing(true);
                 load();
               }}
-              colors={["#5B5BD6"]}
+              colors={["#2563EB"]}
             />
           }
           ListEmptyComponent={
@@ -532,7 +532,7 @@ const Exams: React.FC = () => {
 export default Exams;
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F3EEFF" },
+  safe: { flex: 1, backgroundColor: "#F5F8FF" },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -548,7 +548,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 10,
@@ -566,7 +566,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#F0F0F0",
   },
-  code: { fontSize: 13, fontWeight: "700", color: "#5B5BD6" },
+  code: { fontSize: 13, fontWeight: "700", color: "#2563EB" },
   name: { fontSize: 15, fontWeight: "700", marginTop: 2 },
   meta: { fontSize: 12, color: "#9CA3AF", marginTop: 4 },
   iconBtn: { padding: 8 },
@@ -612,7 +612,7 @@ const styles = StyleSheet.create({
   },
   selectText: { flex: 1, fontSize: 15 },
   saveBtn: {
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     borderRadius: 14,
     paddingVertical: 16,
     alignItems: "center",

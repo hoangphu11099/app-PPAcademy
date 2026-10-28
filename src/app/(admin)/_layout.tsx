@@ -1,3 +1,4 @@
+import { interaction } from "../../theme/interaction";
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
@@ -8,7 +9,8 @@ export default function AdminLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#5B5BD6",
+        tabBarIconStyle: { width: 48, height: 34 },
+        tabBarActiveTintColor: "#2563EB",
         tabBarInactiveTintColor: "#9CA3AF",
         tabBarStyle: styles.tabBar,
         tabBarLabelStyle: styles.tabLabel,
@@ -21,7 +23,7 @@ export default function AdminLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               name={focused ? "home" : "home-outline"}
-              color={color}
+              color={typeof color === "string" ? color : "#9CA3AF"}
               focused={focused}
             />
           ),
@@ -29,13 +31,13 @@ export default function AdminLayout() {
       />
 
       <Tabs.Screen
-        name="Users"
+        name="users"
         options={{
           title: "Người dùng",
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               name={focused ? "people" : "people-outline"}
-              color={color}
+              color={typeof color === "string" ? color : "#9CA3AF"}
               focused={focused}
             />
           ),
@@ -49,7 +51,7 @@ export default function AdminLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               name={focused ? "book" : "book-outline"}
-              color={color}
+              color={typeof color === "string" ? color : "#9CA3AF"}
               focused={focused}
             />
           ),
@@ -57,13 +59,13 @@ export default function AdminLayout() {
       />
 
       <Tabs.Screen
-        name="Reports"
+        name="reports"
         options={{
           title: "Báo cáo",
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               name={focused ? "stats-chart" : "stats-chart-outline"}
-              color={color}
+              color={typeof color === "string" ? color : "#9CA3AF"}
               focused={focused}
             />
           ),
@@ -77,35 +79,36 @@ export default function AdminLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               name={focused ? "person" : "person-outline"}
-              color={color}
+              color={typeof color === "string" ? color : "#9CA3AF"}
               focused={focused}
             />
           ),
         }}
       />
 
-      <Tabs.Screen name="CreateIdStudent" options={{ href: null }} />
+      <Tabs.Screen name="CreateIdStudent" options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" } }} />
       <Tabs.Screen
         name="AcademicWarnings"
-        options={{ href: null, headerShown: false }}
+        options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" }, headerShown: false }}
       />
       <Tabs.Screen
         name="Consultations"
-        options={{ href: null, headerShown: false }}
+        options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" }, headerShown: false }}
       />
-      <Tabs.Screen name="Rooms" options={{ href: null, headerShown: false }} />
+      <Tabs.Screen name="Rooms" options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" }, headerShown: false }} />
+      <Tabs.Screen name="CourseRegistrations" options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" }, headerShown: false }} />
       <Tabs.Screen
         name="StudentDetail"
-        options={{ href: null, headerShown: false }}
+        options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" }, headerShown: false }}
       />
-      <Tabs.Screen name="AddStudentToClass" options={{ href: null }} />
-      <Tabs.Screen name="CreateIdTeacher" options={{ href: null }} />
-      <Tabs.Screen name="CreateClass" options={{ href: null }} />
-      <Tabs.Screen name="AssignTeacher" options={{ href: null }} />
-      <Tabs.Screen name="SendNotification" options={{ href: null }} />
-      <Tabs.Screen name="Exams" options={{ href: null }} />
-      <Tabs.Screen name="NotificationList" options={{ href: null }} />
-      <Tabs.Screen name="ClassList" options={{ href: null }} />
+      <Tabs.Screen name="AddStudentToClass" options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" } }} />
+      <Tabs.Screen name="CreateIdTeacher" options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" } }} />
+      <Tabs.Screen name="CreateClass" options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" } }} />
+      <Tabs.Screen name="AssignTeacher" options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" } }} />
+      <Tabs.Screen name="SendNotification" options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" } }} />
+      <Tabs.Screen name="exams" options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" } }} />
+      <Tabs.Screen name="NotificationList" options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" } }} />
+      <Tabs.Screen name="ClassList" options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" } }} />
     </Tabs>
   );
 }
@@ -120,8 +123,8 @@ function TabIcon({
   focused: boolean;
 }) {
   return (
-    <View style={[styles.iconWrap, focused && styles.iconWrapActive]}>
-      <Ionicons name={name} size={22} color={color} />
+    <View style={[styles.iconWrap, focused && styles.iconWrapActive, focused && interaction.glow]}>
+      <Ionicons name={name} size={22} color={typeof color === "string" ? color : "#9CA3AF"} />
     </View>
   );
 }
@@ -156,6 +159,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   iconWrapActive: {
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
   },
 });

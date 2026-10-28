@@ -1,3 +1,5 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
 import { useAuth } from "@/src/context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
@@ -11,8 +13,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { changePasswordAPI } from "../../api/authApi";
@@ -42,7 +42,7 @@ async function resolveRole(userRole?: string | null): Promise<string> {
 function profilePath(role: string) {
   if (role === "admin") return "/(admin)/Profile";
   if (role === "teacher") return "/(teacher)/Profile";
-  if (role === "student") return "/(student)/Profile";
+  if (role === "student") return "/(student)/profile";
   return null;
 }
 
@@ -66,7 +66,7 @@ const ChangePasswordScreen = () => {
     if (router.canGoBack()) {
       router.back();
     } else {
-      router.replace("/(student)/Profile" as any);
+      router.replace("/(student)/profile" as any);
     }
   };
 
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
   },
   eyeIcon: { padding: 8 },
   submitButton: {
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     borderRadius: 12,
     paddingVertical: 16,
     alignItems: "center",

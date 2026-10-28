@@ -1,14 +1,16 @@
+import { interaction } from "../../theme/interaction";
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, View } from "react-native";
 
 export default function StudentLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#5B5BD6",
+        tabBarIconStyle: { width: 48, height: 34 },
+        tabBarActiveTintColor: "#2563EB",
         tabBarInactiveTintColor: "#9CA3AF",
         tabBarStyle: {
           backgroundColor: "#FFFFFF",
@@ -34,11 +36,11 @@ export default function StudentLayout() {
         options={{
           title: "Trang chủ",
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons
+            <View style={[{ width: 40, height: 32, borderRadius: 14, alignItems: "center", justifyContent: "center" }, focused && interaction.selected, focused && interaction.glow]}><Ionicons
               name={focused ? "home" : "home-outline"}
               size={24}
-              color={color}
-            />
+              color={typeof color === "string" ? color : "#9CA3AF"}
+            /></View>
           ),
         }}
       />
@@ -48,11 +50,11 @@ export default function StudentLayout() {
         options={{
           title: "Lịch",
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons
+            <View style={[{ width: 40, height: 32, borderRadius: 14, alignItems: "center", justifyContent: "center" }, focused && interaction.selected, focused && interaction.glow]}><Ionicons
               name={focused ? "calendar" : "calendar-outline"}
               size={24}
-              color={color}
-            />
+              color={typeof color === "string" ? color : "#9CA3AF"}
+            /></View>
           ),
         }}
       />
@@ -62,52 +64,52 @@ export default function StudentLayout() {
         options={{
           title: "Đăng ký",
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons
+            <View style={[{ width: 40, height: 32, borderRadius: 14, alignItems: "center", justifyContent: "center" }, focused && interaction.selected, focused && interaction.glow]}><Ionicons
               name={focused ? "school" : "school-outline"}
               size={24}
-              color={color}
-            />
+              color={typeof color === "string" ? color : "#9CA3AF"}
+            /></View>
           ),
         }}
       />
 
       <Tabs.Screen
-        name="Profile"
+        name="profile"
         options={{
           title: "Hồ sơ",
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons
+            <View style={[{ width: 40, height: 32, borderRadius: 14, alignItems: "center", justifyContent: "center" }, focused && interaction.selected, focused && interaction.glow]}><Ionicons
               name={focused ? "person" : "person-outline"}
               size={24}
-              color={color}
-            />
+              color={typeof color === "string" ? color : "#9CA3AF"}
+            /></View>
           ),
         }}
       />
 
       <Tabs.Screen
         name="AcademicWarnings"
-        options={{ href: null, headerShown: false }}
+        options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" }, headerShown: false }}
       />
       <Tabs.Screen
-        name="Notification"
-        options={{ href: null, headerShown: false, title: "Thông báo" }}
+        name="notification"
+        options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" }, headerShown: false, title: "Thông báo" }}
       />
       <Tabs.Screen
         name="QrAttendance"
-        options={{ href: null, headerShown: false }}
+        options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" }, headerShown: false }}
       />
       <Tabs.Screen
         name="StudentSubmissions"
-        options={{ href: null, headerShown: false }}
+        options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" }, headerShown: false }}
       />
       <Tabs.Screen
         name="StudentExercises"
-        options={{ href: null, headerShown: false }}
+        options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" }, headerShown: false }}
       />
       <Tabs.Screen
         name="ViewTranscript"
-        options={{ href: null, headerShown: false }}
+        options={{ tabBarButton: () => null, tabBarItemStyle: { display: "none" }, headerShown: false }}
       />
     </Tabs>
   );

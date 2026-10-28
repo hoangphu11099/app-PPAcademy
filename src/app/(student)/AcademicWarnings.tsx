@@ -1,3 +1,4 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
 import apiClient from "@/src/api/axios";
 import { useAuth } from "@/src/context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
@@ -10,7 +11,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -78,7 +78,7 @@ export default function StudentAcademicWarnings() {
         <View style={styles.back} />
       </View>
       {loading ? (
-        <ActivityIndicator style={{ marginTop: 40 }} color="#5B5BD6" />
+        <ActivityIndicator style={{ marginTop: 40 }} color="#2563EB" />
       ) : (
         <FlatList
           data={list}
@@ -91,7 +91,7 @@ export default function StudentAcademicWarnings() {
                 setRefreshing(true);
                 load();
               }}
-              colors={["#5B5BD6"]}
+              colors={["#2563EB"]}
             />
           }
           ListEmptyComponent={
@@ -123,7 +123,7 @@ export default function StudentAcademicWarnings() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F3EEFF" },
+  safe: { flex: 1, backgroundColor: "#F5F8FF" },
   header: {
     flexDirection: "row",
     alignItems: "center",

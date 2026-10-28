@@ -1,3 +1,4 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
 import apiClient from "@/src/api/axios";
 import {
   deleteNotificationLocal,
@@ -18,7 +19,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -57,7 +57,7 @@ const statusMeta = (status: string) => {
   const s = (status || "").toLowerCase();
   if (s === "sent") return { label: "Mới", color: "#059669", bg: "#D1FAE5" };
   if (s === "failed") return { label: "Lỗi", color: "#DC2626", bg: "#FEE2E2" };
-  return { label: "Hệ thống", color: "#5B5BD6", bg: "#EDE9FE" };
+  return { label: "Hệ thống", color: "#2563EB", bg: "#EAF2FF" };
 };
 
 const normalizeList = (
@@ -196,7 +196,7 @@ const Notification = () => {
           <Ionicons
             name={item.isRead ? "mail-open-outline" : "mail-unread-outline"}
             size={22}
-            color={item.isRead ? "#9CA3AF" : "#5B5BD6"}
+            color={item.isRead ? "#9CA3AF" : "#2563EB"}
           />
           {!item.isRead && <View style={styles.dot} />}
         </View>
@@ -246,14 +246,14 @@ const Notification = () => {
 
   return (
     <SafeAreaView style={styles.safe} edges={["top"]}>
-      <StatusBar barStyle="dark-content" backgroundColor="#F3EEFF" />
+      <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
           <Ionicons name="arrow-back" size={22} color="#1A1A1A" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Thông báo</Text>
         <TouchableOpacity onPress={() => fetchList(false)} hitSlop={12}>
-          <Ionicons name="refresh" size={22} color="#5B5BD6" />
+          <Ionicons name="refresh" size={22} color="#2563EB" />
         </TouchableOpacity>
       </View>
 
@@ -271,7 +271,7 @@ const Notification = () => {
 
       {loading ? (
         <View style={styles.center}>
-          <ActivityIndicator size="large" color="#5B5BD6" />
+          <ActivityIndicator size="large" color="#2563EB" />
         </View>
       ) : (
         <FlatList
@@ -286,8 +286,8 @@ const Notification = () => {
                 setRefreshing(true);
                 fetchList(false);
               }}
-              colors={["#5B5BD6"]}
-              tintColor="#5B5BD6"
+              colors={["#2563EB"]}
+              tintColor="#2563EB"
             />
           }
           ListEmptyComponent={
@@ -368,7 +368,7 @@ const Notification = () => {
 export default Notification;
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F3EEFF" },
+  safe: { flex: 1, backgroundColor: "#F5F8FF" },
   center: { flex: 1, justifyContent: "center", alignItems: "center" },
   header: {
     flexDirection: "row",
@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   count: { fontSize: 13, color: "#6B7280", fontWeight: "600" },
-  markAll: { fontSize: 13, color: "#5B5BD6", fontWeight: "700" },
+  markAll: { fontSize: 13, color: "#2563EB", fontWeight: "700" },
   list: { paddingHorizontal: 14, paddingBottom: 32 },
   card: {
     flexDirection: "row",
@@ -413,14 +413,14 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   cardUnread: {
-    backgroundColor: "#F5F3FF",
-    borderColor: "#DDD6FE",
+    backgroundColor: "#EFF6FF",
+    borderColor: "#DBEAFE",
   },
   iconWrap: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -476,7 +476,7 @@ const styles = StyleSheet.create({
   emptyHint: { fontSize: 13, color: "#9CA3AF", textAlign: "center" },
   retry: {
     marginTop: 8,
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     paddingHorizontal: 18,
     paddingVertical: 10,
     borderRadius: 12,
@@ -535,7 +535,7 @@ const styles = StyleSheet.create({
   },
   modalDeleteText: { color: "#DC2626", fontWeight: "700", fontSize: 14 },
   closeBtn: {
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     borderRadius: 14,
     paddingVertical: 14,
     alignItems: "center",

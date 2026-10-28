@@ -1,7 +1,7 @@
 export default {
-  primary: "#3949FF",
+  primary: "#2563EB",
 
-  secondary: "#E9ECFF",
+  secondary: "#EAF2FF",
 
   success: "#28C76F",
 

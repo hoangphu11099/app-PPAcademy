@@ -42,7 +42,7 @@ export const getOpenCourseClassesAPI = (params?: {
 export function registerCourseAPI(
   payloadOrCourseId:
     | number
-    | { classId: number; courseId?: number; note?: string },
+    | { classId: number; courseId?: number; courseOfferingId?: number; note?: string },
   classIdMaybe?: number,
 ) {
   let classId: number;
@@ -65,6 +65,7 @@ export function registerCourseAPI(
   }
 
   return api.post("/course-registrations", {
+    courseOfferingId: typeof payloadOrCourseId === "object" ? payloadOrCourseId.courseOfferingId : undefined,
     classId,
     courseId: courseId && !Number.isNaN(courseId) ? courseId : undefined,
     note: note || undefined,

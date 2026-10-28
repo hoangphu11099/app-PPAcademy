@@ -1,3 +1,4 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
 import apiClient from "@/src/api/axios";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect, useRouter } from "expo-router";
@@ -9,7 +10,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -175,7 +175,7 @@ const ViewSuggestClass: React.FC = () => {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#5B5BD6" />
+        <ActivityIndicator size="large" color="#2563EB" />
         <Text style={styles.loadingText}>Đang tải phân công...</Text>
       </View>
     );
@@ -183,7 +183,7 @@ const ViewSuggestClass: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top"]}>
-      <StatusBar barStyle="dark-content" backgroundColor="#F3EEFF" />
+      <StatusBar barStyle="dark-content" />
 
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
@@ -196,7 +196,7 @@ const ViewSuggestClass: React.FC = () => {
             fetchOffers(false);
           }}
           style={styles.backBtn}>
-          <Ionicons name="refresh" size={22} color="#5B5BD6" />
+          <Ionicons name="refresh" size={22} color="#2563EB" />
         </TouchableOpacity>
       </View>
 
@@ -209,8 +209,8 @@ const ViewSuggestClass: React.FC = () => {
               setRefreshing(true);
               fetchOffers(false);
             }}
-            colors={["#5B5BD6"]}
-            tintColor="#5B5BD6"
+            colors={["#2563EB"]}
+            tintColor="#2563EB"
           />
         }>
         <Text style={styles.subtitle}>
@@ -328,12 +328,12 @@ const ViewSuggestClass: React.FC = () => {
 export default ViewSuggestClass;
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#F3EEFF" },
+  safeArea: { flex: 1, backgroundColor: "#F5F8FF" },
   center: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F3EEFF",
+    backgroundColor: "#F5F8FF",
   },
   loadingText: { marginTop: 12, color: "#6B7280", fontSize: 14 },
   header: {
@@ -416,7 +416,7 @@ const styles = StyleSheet.create({
   classCode: {
     fontSize: 15,
     fontWeight: "700",
-    color: "#5B5BD6",
+    color: "#2563EB",
     marginBottom: 2,
   },
   courseName: { fontSize: 16, fontWeight: "600", color: "#1A1A1A" },
@@ -435,7 +435,7 @@ const styles = StyleSheet.create({
   },
   metaText: { fontSize: 13, color: "#6B7280", flex: 1 },
   msgBox: {
-    backgroundColor: "#F5F3FF",
+    backgroundColor: "#EFF6FF",
     borderRadius: 10,
     padding: 10,
     marginTop: 8,
@@ -444,14 +444,14 @@ const styles = StyleSheet.create({
   msgLabel: {
     fontSize: 11,
     fontWeight: "700",
-    color: "#5B5BD6",
+    color: "#2563EB",
     marginBottom: 4,
   },
-  msgText: { fontSize: 13, color: "#4C1D95", lineHeight: 18 },
+  msgText: { fontSize: 13, color: "#1E3A8A", lineHeight: 18 },
   timeText: { fontSize: 11, color: "#9CA3AF", marginTop: 6 },
   respondBtn: {
     marginTop: 14,
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     borderRadius: 12,
     paddingVertical: 12,
     flexDirection: "row",

@@ -1,3 +1,5 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
 import apiClient from "@/src/api/axios";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -11,8 +13,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -123,13 +123,13 @@ const CreateIdTeacher: React.FC = () => {
 
       if (!e?.response) {
         msg =
-          "Không kết nối server. Kiểm tra IP trong axios / backend đang chạy.";
+          "Không thể kết nối hệ thống. Vui lòng kiểm tra kết nối mạng và thử lại.";
       } else if (status === 401 || status === 403) {
         msg =
           "Phiên đăng nhập hết hạn hoặc không có quyền admin. Đăng nhập lại.";
       } else if (status === 404) {
         msg =
-          "API POST /teachers không tồn tại. Kiểm tra route backend CreateTeacher.";
+          "Dịch vụ tạo hồ sơ giảng viên hiện chưa khả dụng. Vui lòng liên hệ quản trị viên.";
       } else if (/duplicate|unique|tồn tại|already|Duplicate/i.test(msg)) {
         msg =
           "Username, email hoặc mã GV đã tồn tại.\nĐổi username / teacherCode / email rồi thử lại.";
@@ -266,7 +266,7 @@ const CreateIdTeacher: React.FC = () => {
 export default CreateIdTeacher;
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F3EEFF" },
+  safe: { flex: 1, backgroundColor: "#F5F8FF" },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -285,8 +285,8 @@ const styles = StyleSheet.create({
   scroll: { padding: 20, paddingBottom: 40 },
   hint: {
     fontSize: 12.5,
-    color: "#5B5BD6",
-    backgroundColor: "#EDE9FE",
+    color: "#2563EB",
+    backgroundColor: "#EAF2FF",
     padding: 12,
     borderRadius: 12,
     marginBottom: 16,
@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
   },
   resultTitle: { fontWeight: "700", color: "#059669", marginBottom: 4 },
   btn: {
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     borderRadius: 14,
     paddingVertical: 16,
     alignItems: "center",

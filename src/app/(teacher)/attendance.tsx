@@ -1,3 +1,4 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
 import api from "@/src/api/axios";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
@@ -8,7 +9,6 @@ import {
   RefreshControl,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -402,7 +402,7 @@ const Attendance = () => {
           const hasToday = item.schedules.some((s) => s.matchesToday);
           const hint = canOpenHint(item);
           return (
-            <TouchableOpacity
+            <TouchableOpacity selected={Boolean(active)}
               style={[styles.card, active && styles.cardActive]}
               activeOpacity={0.85}
               onPress={() => setSelectedKey(item.key)}>

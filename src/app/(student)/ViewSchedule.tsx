@@ -1,7 +1,10 @@
+import { academicDate, scheduleMatchesDate } from "../../utils/academic";
+import { useFocusEffect } from "expo-router";
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
 import { getScheduleAPI } from "@/src/api/authApi";
 import { useAuth } from "@/src/context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -9,7 +12,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -25,6 +27,10 @@ interface ScheduleItem {
   credit: number;
   status?: "active" | "upcoming" | "finished";
   dayKey?: string;
+  teachingDate?: string;
+  startDate?: string;
+  endDate?: string;
+  building?: string;
 }
 
 interface DayMeta {
@@ -239,7 +245,8 @@ const parseTimeToSort = (t: string): number => {
 };
 
 const mapScheduleRow = (item: any, index: number): ScheduleItem | null => {
-  const dayKey = normalizeDayKey(
+  const teachingDate = String(item.teachingDate || item.teaching_date || "").slice(0, 10);
+  const dayKey = teachingDate ? DAY_KEYS[new Date(`${teachingDate}T12:00:00`).getDay()] : normalizeDayKey(
     item.day_of_week ?? item.dayOfWeek ?? item.DayOfWeek ?? item.day,
   );
   if (!dayKey) return null;
@@ -275,6 +282,10 @@ const mapScheduleRow = (item: any, index: number): ScheduleItem | null => {
       item.teacher_name ?? item.teacherName ?? item.TeacherName ?? "—",
     ),
     credit: Number(item.credit ?? item.credits ?? 0) || (undefined as any),
+    teachingDate,
+    startDate: String(item.startDate || "").slice(0,10),
+    endDate: String(item.endDate || "").slice(0,10),
+    building: String(item.building || ""),
     status: "upcoming",
     dayKey,
   };
@@ -308,12 +319,6 @@ const buildScheduleMap = (
     const mapped = mapScheduleRow(item, index);
     if (mapped?.dayKey && map[mapped.dayKey]) {
       map[mapped.dayKey].push(mapped);
-    } else {
-      const fb = mapScheduleRow(
-        { ...item, dayOfWeek: "Monday", day_of_week: "Monday" },
-        index,
-      );
-      if (fb) map.Monday.push(fb);
     }
   }
   for (let i = 0; i < DAY_KEYS.length; i++) {
@@ -329,7 +334,8 @@ const buildScheduleMap = (
 const ScheduleCard = React.memo(({ item }: { item: ScheduleItem }) => (
   <View style={styles.scheduleCard}>
     <View style={styles.timeCol}>
-      <Text style={styles.startTime}>{item.startTime}</Text>
+      <Text style={styles.startTime}>{item.startTime || "—"}</Text>
+      <Text style={styles.rangeText}>{item.endTime || "—"}</Text>
     </View>
     <View
       style={[
@@ -338,22 +344,22 @@ const ScheduleCard = React.memo(({ item }: { item: ScheduleItem }) => (
       ]}
     />
     <View style={styles.contentCol}>
-      <Text style={styles.courseName} numberOfLines={1}>
+      <Text style={styles.courseName} >
         {item.courseName}
       </Text>
       <Text style={styles.roomText}>
-        {item.classCode ? `${item.classCode} · ` : ""}Phòng {item.room}
+        {item.classCode ? `Lớp ${item.classCode} · ` : ""}Phòng {item.room}{item.building ? ` · ${item.building}` : ""}
       </Text>
       <Text style={styles.rangeText}>
-        {item.startTime}
-        {item.endTime ? `-${item.endTime}` : ""}
-        {item.teacherName && item.teacherName !== "—"
-          ? ` · ${item.teacherName}`
-          : ""}
+        Giảng viên: {item.teacherName && item.teacherName !== "—" ? item.teacherName : "Chưa phân công"}
       </Text>
+      <Text style={styles.rangeText}>Bắt đầu: {item.startTime || "Chưa xếp"} · Kết thúc: {item.endTime || "Chưa xếp"}</Text>
+      <Text style={styles.rangeText}>{item.teachingDate ? `Ngày học: ${academicDate(item.teachingDate)}` : `Thời gian học: ${academicDate(item.startDate)} – ${academicDate(item.endDate)}`}</Text>
     </View>
   </View>
 ));
+
+ScheduleCard.displayName = "ScheduleCard";
 
 const ViewSchedule: React.FC = () => {
   const { token } = useAuth();
@@ -366,7 +372,6 @@ const ViewSchedule: React.FC = () => {
   >({});
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [hasFetched, setHasFetched] = useState(false);
 
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [totalSlots, setTotalSlots] = useState(0);
@@ -384,18 +389,17 @@ const ViewSchedule: React.FC = () => {
       ) {
         setScheduleMap(scheduleCache.map);
         setTotalSlots(scheduleCache.total);
-        setHasFetched(true);
         setLoading(false);
         setFetchError(
           scheduleCache.total === 0
-            ? "Chưa có lịch. Hãy đăng ký học phần (và học phần phải có schedules trên server)."
+            ? "Chưa có lịch học chính thức. Vui lòng hoàn tất học phí và chờ học vụ xếp lịch."
             : null,
         );
         return;
       }
 
       try {
-        if (!isRefresh && !hasFetched) setLoading(true);
+        if (!isRefresh) setLoading(true);
         setFetchError(null);
 
         const response = await getScheduleAPI();
@@ -407,26 +411,20 @@ const ViewSchedule: React.FC = () => {
         scheduleCache = { tokenKey, map, total, at: Date.now() };
         setTotalSlots(total);
         setScheduleMap(map);
-        setHasFetched(true);
 
         if (rows.length === 0) {
           setFetchError(
-            "Chưa có lịch. Hãy đăng ký học phần (và học phần phải có schedules trên server).",
+            "Chưa có lịch học chính thức. Vui lòng hoàn tất học phí và chờ học vụ xếp lịch."
           );
         }
 
-        const todayKey = getTodayKey();
-        if ((map[todayKey] || []).length === 0 && total > 0) {
-          const first = DAY_KEYS.find((k) => (map[k] || []).length > 0);
-          if (first) setSelectedDayKey(first);
-        }
+
       } catch (e: any) {
         const status = e?.response?.status;
         const msg =
           e?.response?.data?.message || e?.message || "Không tải được lịch học";
         setScheduleMap(emptyMap());
         setTotalSlots(0);
-        setHasFetched(true);
         setFetchError(
           status === 401 || status === 403
             ? "Phiên đăng nhập hết hạn / không phải tài khoản sinh viên."
@@ -437,12 +435,12 @@ const ViewSchedule: React.FC = () => {
         setRefreshing(false);
       }
     },
-    [token, hasFetched],
+    [token],
   );
 
-  useEffect(() => {
-    if (token && !hasFetched) fetchSchedule(false);
-  }, [token, hasFetched, fetchSchedule]);
+  useFocusEffect(useCallback(() => {
+    if (token) void fetchSchedule(true);
+  }, [token, fetchSchedule]));
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -463,21 +461,20 @@ const ViewSchedule: React.FC = () => {
   );
 
   const dayItems = useMemo(
-    () => scheduleMap[selectedDayKey] || [],
-    [scheduleMap, selectedDayKey],
+    () => (scheduleMap[DAY_KEYS[currentDate.getDay()]] || []).filter(item => scheduleMatchesDate(item, currentDate)),
+    [scheduleMap, currentDate],
   );
 
   const getItemsForDate = useCallback(
-    (d: DayMeta) => scheduleMap[d.key] || [],
+    (d: DayMeta) => (scheduleMap[d.key] || []).filter(item => scheduleMatchesDate(item, d.fullDate)),
     [scheduleMap],
   );
 
   const changeMonth = (delta: number) => {
-    setCurrentDate((prev) => {
-      const next = new Date(prev);
-      next.setMonth(prev.getMonth() + delta);
-      return next;
-    });
+    const next = new Date(currentDate);
+    next.setMonth(currentDate.getMonth() + delta);
+    setCurrentDate(next);
+    setSelectedDayKey(DAY_KEYS[next.getDay()]);
   };
 
   const renderDayView = () => (
@@ -496,7 +493,7 @@ const ViewSchedule: React.FC = () => {
         {weekDays.map((d) => {
           const active = selectedDayKey === d.key;
           return (
-            <TouchableOpacity
+            <TouchableOpacity selected={Boolean(active)}
               key={d.key + d.dateNum}
               style={[styles.dateItem, active && styles.dateItemActive]}
               onPress={() => {
@@ -531,8 +528,8 @@ const ViewSchedule: React.FC = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={["#5B5BD6"]}
-            tintColor="#5B5BD6"
+            colors={["#2563EB"]}
+            tintColor="#2563EB"
           />
         }
         ListEmptyComponent={
@@ -556,19 +553,19 @@ const ViewSchedule: React.FC = () => {
         <RefreshControl
           refreshing={refreshing}
           onRefresh={onRefresh}
-          colors={["#5B5BD6"]}
-          tintColor="#5B5BD6"
+          colors={["#2563EB"]}
+          tintColor="#2563EB"
         />
       }>
       <View style={styles.monthNav}>
         <TouchableOpacity onPress={() => changeMonth(-1)} hitSlop={12}>
-          <Ionicons name="chevron-back" size={22} color="#5B5BD6" />
+          <Ionicons name="chevron-back" size={22} color="#2563EB" />
         </TouchableOpacity>
         <Text style={styles.monthNavText}>
           {MONTH_NAMES[currentDate.getMonth()]} {currentDate.getFullYear()}
         </Text>
         <TouchableOpacity onPress={() => changeMonth(1)} hitSlop={12}>
-          <Ionicons name="chevron-forward" size={22} color="#5B5BD6" />
+          <Ionicons name="chevron-forward" size={22} color="#2563EB" />
         </TouchableOpacity>
       </View>
 
@@ -597,7 +594,7 @@ const ViewSchedule: React.FC = () => {
                   selectedDayKey === d.key &&
                   d.dateNum === currentDate.getDate();
                 return (
-                  <TouchableOpacity
+                  <TouchableOpacity selected={Boolean(isSelected)}
                     key={d.key + d.dateNum}
                     style={[
                       styles.weekDayItem,
@@ -653,19 +650,19 @@ const ViewSchedule: React.FC = () => {
         <RefreshControl
           refreshing={refreshing}
           onRefresh={onRefresh}
-          colors={["#5B5BD6"]}
-          tintColor="#5B5BD6"
+          colors={["#2563EB"]}
+          tintColor="#2563EB"
         />
       }>
       <View style={styles.monthNav}>
         <TouchableOpacity onPress={() => changeMonth(-1)} hitSlop={12}>
-          <Ionicons name="chevron-back" size={22} color="#5B5BD6" />
+          <Ionicons name="chevron-back" size={22} color="#2563EB" />
         </TouchableOpacity>
         <Text style={styles.monthNavText}>
           {MONTH_NAMES[currentDate.getMonth()]} {currentDate.getFullYear()}
         </Text>
         <TouchableOpacity onPress={() => changeMonth(1)} hitSlop={12}>
-          <Ionicons name="chevron-forward" size={22} color="#5B5BD6" />
+          <Ionicons name="chevron-forward" size={22} color="#2563EB" />
         </TouchableOpacity>
       </View>
 
@@ -686,7 +683,7 @@ const ViewSchedule: React.FC = () => {
             d.dateNum === currentDate.getDate();
 
           return (
-            <TouchableOpacity
+            <TouchableOpacity selected={Boolean(isSelected)}
               key={idx}
               style={[
                 styles.monthCell,
@@ -743,7 +740,7 @@ const ViewSchedule: React.FC = () => {
 
       <View style={styles.modeRow}>
         {(["day", "week", "month"] as const).map((mode) => (
-          <TouchableOpacity
+          <TouchableOpacity selected={Boolean(viewMode === mode)}
             key={mode}
             style={[styles.modeTab, viewMode === mode && styles.modeTabActive]}
             onPress={() => setViewMode(mode)}
@@ -761,7 +758,7 @@ const ViewSchedule: React.FC = () => {
 
       {loading && !refreshing ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#5B5BD6" />
+          <ActivityIndicator size="large" color="#2563EB" />
         </View>
       ) : (
         <>
@@ -790,13 +787,13 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 4,
     fontSize: 12,
-    color: "#5B5BD6",
+    color: "#2563EB",
     fontWeight: "600",
   },
 
   container: {
     flex: 1,
-    backgroundColor: "#F3EEFF",
+    backgroundColor: "#F5F8FF",
   },
   header: {
     paddingHorizontal: 20,
@@ -824,7 +821,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F3F4F6",
   },
   modeTabActive: {
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
   },
   modeTabText: {
     fontSize: 14,
@@ -852,7 +849,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
   },
   dateItemActive: {
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
   },
   dateLabel: {
     fontSize: 12,
@@ -913,10 +910,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
   },
   barActive: {
-    backgroundColor: "#10B981",
+    backgroundColor: "#2563EB",
   },
   barUpcoming: {
-    backgroundColor: "#10B981",
+    backgroundColor: "#60A5FA",
   },
   contentCol: {
     flex: 1,
@@ -1000,7 +997,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   weekBadge: {
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 10,
@@ -1008,7 +1005,7 @@ const styles = StyleSheet.create({
   weekBadgeText: {
     fontSize: 12,
     fontWeight: "600",
-    color: "#5B5BD6",
+    color: "#2563EB",
   },
   weekDaysRow: {
     flexDirection: "row",
@@ -1023,10 +1020,10 @@ const styles = StyleSheet.create({
     opacity: 0.35,
   },
   weekDayToday: {
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
   },
   weekDaySelected: {
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
   },
   weekDayLabel: {
     fontSize: 11,
@@ -1053,7 +1050,7 @@ const styles = StyleSheet.create({
     width: 5,
     height: 5,
     borderRadius: 2.5,
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
   },
 
   // Month view
@@ -1089,10 +1086,10 @@ const styles = StyleSheet.create({
     opacity: 0.3,
   },
   monthCellToday: {
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
   },
   monthCellSelected: {
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
   },
   monthCellNum: {
     fontSize: 15,
@@ -1106,7 +1103,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   monthCellNumToday: {
-    color: "#5B5BD6",
+    color: "#2563EB",
     fontWeight: "700",
   },
   monthDots: {
@@ -1134,8 +1131,8 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
     borderWidth: 1.5,
-    borderColor: "#5B5BD6",
+    borderColor: "#2563EB",
   },
 });

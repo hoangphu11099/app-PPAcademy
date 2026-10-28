@@ -1,8 +1,11 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
 import React, { useState } from "react";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../theme/colors";
+import { interaction } from "../theme/interaction";
 
 interface Props {
   placeholder: string;
@@ -18,10 +21,14 @@ export default function AppInput({
   onChangeText,
 }: Props) {
   const [hide, setHide] = useState(secure);
+  const [focused, setFocused] = useState(false);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, focused && interaction.inputFocus, focused && interaction.glow]}>
       <TextInput
+        glowEnabled={false}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         style={styles.input}
         placeholder={placeholder}
         secureTextEntry={hide}

@@ -32,10 +32,10 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
 
-const API_BASE = "http://192.168.20.87:8080";
+import { env } from "../config/env";
 
 const apiClient = axios.create({
-  baseURL: API_BASE,
+  baseURL: env.apiBaseUrl,
   timeout: 15000,
   headers: {
     "Content-Type": "application/json",

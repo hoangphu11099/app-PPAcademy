@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { SchoolLogo } from "../components/SchoolLogo";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -31,7 +31,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
   return (
     <View style={[styles.container, embedded && styles.embedded]}>
       <View style={styles.iconWrap}>
-        <Ionicons name="school" size={embedded ? 28 : 40} color="#5B5BD6" />
+        <SchoolLogo size={embedded ? 56 : 80} />
       </View>
       <Text style={[styles.title, embedded && styles.titleEmbedded]}>
         {title}
@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#EDE9FE",
-    shadowColor: "#5B5BD6",
+    borderColor: "#EAF2FF",
+    shadowColor: "#1764C0",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
     shadowRadius: 8,
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 12,
@@ -96,6 +96,6 @@ const styles = StyleSheet.create({
   },
   role: {
     fontWeight: "700",
-    color: "#5B5BD6",
+    color: "#1764C0",
   },
 });

@@ -1,25 +1,26 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { BackgroundVideo } from "../components/HomeVideos";
+import { SchoolLogo } from "../components/SchoolLogo";
+import { homeClips as SLIDES } from "../content/homeVideos";
 import { useAuth } from "@/src/context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Animated,
-  Dimensions,
   Easing,
-  Image,
   Platform,
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const { width, height } = Dimensions.get("window");
 
-function dashboardByRole(role: any) {
+
+function dashboardByRole(role?: string) {
   const r = (role || "").toLowerCase();
   if (r === "admin") return "/(admin)/DashboardAdmin";
   if (r === "teacher") return "/(teacher)/DashboardTeacher";
@@ -27,52 +28,19 @@ function dashboardByRole(role: any) {
   return null;
 }
 
-const SLIDES = [
-  {
-    key: "sinhvien",
-    labelVi: "Sinh viên",
-    image: require("../assets/images/home/sinhvien.gif"),
-  },
-  {
-    key: "khuonvien",
-    labelVi: "Khuôn viên",
-    image: require("../assets/images/home/khuonvien.gif"),
-  },
-  {
-    key: "phonghoc",
-    labelVi: "Phòng học",
-    image: require("../assets/images/home/phonghoc.gif"),
-  },
-  {
-    key: "thuvien",
-    labelVi: "Thư viện",
-    image: require("../assets/images/home/thuvien.gif"),
-  },
-  {
-    key: "phongmay",
-    labelVi: "Phòng máy",
-    image: require("../assets/images/home/phongmay.gif"),
-  },
-];
+
 
 export default function Index() {
   const { token, user, isLoading } = useAuth();
   const router = useRouter();
   const [ready, setReady] = useState(false);
-  const [active, setActive] = useState(2);
-  const [paused, setPaused] = useState(false);
+  const [active, setActive] = useState(0);
+  const [failed, setFailed] = useState<number[]>([]);
 
-  const fade = useRef(new Animated.Value(0)).current;
-  const slideY = useRef(new Animated.Value(24)).current;
-  const imgOpacity = useRef(new Animated.Value(1)).current;
+  const [fade] = useState(() => new Animated.Value(0));
+  const [slideY] = useState(() => new Animated.Value(24));
+  const [imgOpacity] = useState(() => new Animated.Value(1));
 
-  useEffect(() => {
-    if (paused) return;
-    const t = setInterval(() => {
-      setActive((i) => (i + 1) % SLIDES.length);
-    }, 5000);
-    return () => clearInterval(t);
-  }, [paused]);
 
   useEffect(() => {
     imgOpacity.setValue(0.25);
@@ -115,31 +83,38 @@ export default function Index() {
     else router.push("/(auth)/login");
   }, [token, user, router]);
 
-  const selectSlide = (idx: React.SetStateAction<number>) => {
-    setPaused(true);
-    setActive(idx);
-    setTimeout(() => setPaused(false), 10000);
+  const selectSlide = (index: number) => {
+    if (!failed.includes(index)) setActive(index);
+  };
+  const advance = (direction: number, errors = failed) => {
+    for (let step = 1; step <= SLIDES.length; step++) {
+      const next = (active + direction * step + SLIDES.length) % SLIDES.length;
+      if (!errors.includes(next)) { setActive(next); return; }
+    }
   };
 
-  const current = SLIDES[active];
   const scriptFont = Platform.OS === "ios" ? "Snell Roundhand" : "serif";
 
   return (
     <View style={styles.root}>
       <StatusBar
         barStyle="light-content"
-        translucent
-        backgroundColor="transparent"
       />
 
       <Animated.View
         style={[styles.bgWrap, { opacity: imgOpacity }]}
         pointerEvents="none">
-        <Image
-          key={current.key}
-          source={current.image}
-          style={styles.bgImage}
-          resizeMode="cover"
+        <BackgroundVideo
+          key={`${active}-${failed.length}`}
+          index={active}
+          loop={failed.length === SLIDES.length - 1}
+          unavailable={failed.includes(active)}
+          onEnd={() => advance(1)}
+          onError={() => {
+            const errors = [...new Set([...failed, active])];
+            setFailed(errors);
+            advance(1, errors);
+          }}
         />
         <View style={styles.dim} />
       </Animated.View>
@@ -151,9 +126,7 @@ export default function Index() {
             { opacity: fade, transform: [{ translateY: slideY }] },
           ]}>
           <View style={styles.brandRow}>
-            <View style={styles.logoCircle}>
-              <Text style={styles.logoLetters}>PP</Text>
-            </View>
+            <SchoolLogo size={40} />
             <View>
               <Text style={styles.brandName}>PP Academy</Text>
               <Text style={styles.brandSub}>Thông tin nhà trường</Text>
@@ -212,7 +185,7 @@ export default function Index() {
           <TouchableOpacity
             style={styles.navArrow}
             onPress={() =>
-              selectSlide((active - 1 + SLIDES.length) % SLIDES.length)
+              advance(-1)
             }>
             <Ionicons name="chevron-back" size={18} color="#FFFFFF" />
           </TouchableOpacity>
@@ -222,14 +195,16 @@ export default function Index() {
               const on = i === active;
               return (
                 <TouchableOpacity
-                  key={s.key}
+                  key={s.label}
                   style={[styles.tab, on && styles.tabOn]}
+                  disabled={failed.includes(i)}
+                  accessibilityState={{ selected: on, disabled: failed.includes(i) }}
                   onPress={() => selectSlide(i)}
                   activeOpacity={0.85}>
                   <Text
                     style={[styles.tabText, on && styles.tabTextOn]}
                     numberOfLines={1}>
-                    {s.labelVi}
+                    {i === 0 ? "Sinh viên" : s.label}
                   </Text>
                 </TouchableOpacity>
               );
@@ -238,7 +213,7 @@ export default function Index() {
 
           <TouchableOpacity
             style={styles.navArrow}
-            onPress={() => selectSlide((active + 1) % SLIDES.length)}>
+            onPress={() => advance(1)}>
             <Ionicons name="chevron-forward" size={18} color="#FFFFFF" />
           </TouchableOpacity>
         </View>
@@ -248,7 +223,7 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#0B1220" },
+  root: { flex: 1, backgroundColor: "#102C51" },
   safe: { flex: 1 },
   bgWrap: {
     position: "absolute",
@@ -256,15 +231,15 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    width: width,
-    height: height,
+    width: "100%",
+    height: "100%",
   },
   bgImage: {
     position: "absolute",
     top: 0,
     left: 0,
-    width: width,
-    height: height,
+    width: "100%",
+    height: "100%",
   },
   dim: {
     position: "absolute",
@@ -272,7 +247,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.35)",
+    backgroundColor: "rgba(6, 30, 65, 0.48)",
   },
   header: {
     flexDirection: "row",
@@ -287,7 +262,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#0B3D2E",
+    backgroundColor: "#143F73",
     borderWidth: 2,
     borderColor: "#C9A227",
     justifyContent: "center",
@@ -302,7 +277,7 @@ const styles = StyleSheet.create({
   brandName: { color: "#FFFFFF", fontWeight: "800", fontSize: 16 },
   brandSub: { color: "rgba(255,255,255,0.7)", fontSize: 11, marginTop: 1 },
   headerLogin: {
-    backgroundColor: "#1B5E3B",
+    backgroundColor: "#1764C0",
     paddingHorizontal: 16,
     paddingVertical: 9,
     borderRadius: 22,
@@ -323,7 +298,7 @@ const styles = StyleSheet.create({
   },
   heroLine2: {
     fontSize: 40,
-    color: "#C5E1A5",
+    color: "#B9DCFF",
     lineHeight: 50,
     marginBottom: 16,
     fontStyle: "italic",
@@ -332,7 +307,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "rgba(255,255,255,0.92)",
     lineHeight: 21,
-    maxWidth: width * 0.88,
+    maxWidth: "88%",
     marginBottom: 22,
   },
   ctaRow: {
@@ -392,7 +367,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.28)",
   },
   tabOn: {
-    backgroundColor: "rgba(27, 94, 59, 0.92)",
+    backgroundColor: "rgba(23, 100, 192, 0.92)",
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.25)",
   },

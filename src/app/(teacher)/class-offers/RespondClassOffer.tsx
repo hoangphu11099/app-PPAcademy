@@ -1,3 +1,5 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
 import apiClient from "@/src/api/axios";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -13,8 +15,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -122,7 +122,7 @@ const RespondClassOffer = () => {
     const ok = successKind === "accepted";
     return (
       <SafeAreaView style={styles.safeArea} edges={["top"]}>
-        <StatusBar barStyle="dark-content" backgroundColor="#F3EEFF" />
+        <StatusBar barStyle="dark-content" />
         <View style={styles.successWrap}>
           <View
             style={[
@@ -147,7 +147,7 @@ const RespondClassOffer = () => {
           <TouchableOpacity
             style={[
               styles.successBtn,
-              { backgroundColor: ok ? "#5B5BD6" : "#6B7280" },
+              { backgroundColor: ok ? "#2563EB" : "#6B7280" },
             ]}
             onPress={() => router.back()}
             activeOpacity={0.85}>
@@ -160,7 +160,7 @@ const RespondClassOffer = () => {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top"]}>
-      <StatusBar barStyle="dark-content" backgroundColor="#F3EEFF" />
+      <StatusBar barStyle="dark-content" />
 
       <View style={styles.header}>
         <TouchableOpacity
@@ -194,7 +194,7 @@ const RespondClassOffer = () => {
             {mode === "choose" ? (
               <View style={styles.chooseBlock}>
                 <View style={styles.iconWrap}>
-                  <Ionicons name="school" size={56} color="#5B5BD6" />
+                  <Ionicons name="school" size={56} color="#2563EB" />
                 </View>
                 <Text style={styles.title}>Bạn muốn phản hồi thế nào?</Text>
                 <Text style={styles.subtitle}>
@@ -205,7 +205,7 @@ const RespondClassOffer = () => {
                 {loading ? (
                   <ActivityIndicator
                     size="large"
-                    color="#5B5BD6"
+                    color="#2563EB"
                     style={{ marginTop: 24 }}
                   />
                 ) : (
@@ -254,7 +254,7 @@ const RespondClassOffer = () => {
                   {QUICK_REASONS.map((r) => {
                     const active = reason === r;
                     return (
-                      <TouchableOpacity
+                      <TouchableOpacity selected={Boolean(active)}
                         key={r}
                         style={[styles.chip, active && styles.chipActive]}
                         onPress={() => setReason(r)}
@@ -320,13 +320,13 @@ const RespondClassOffer = () => {
                 styles.confirmIconWrap,
                 {
                   backgroundColor:
-                    confirmType === "accept" ? "#EDE9FE" : "#FEE2E2",
+                    confirmType === "accept" ? "#EAF2FF" : "#FEE2E2",
                 },
               ]}>
               <Ionicons
                 name={confirmType === "accept" ? "checkmark-circle" : "warning"}
                 size={40}
-                color={confirmType === "accept" ? "#5B5BD6" : "#DC2626"}
+                color={confirmType === "accept" ? "#2563EB" : "#DC2626"}
               />
             </View>
             <Text style={styles.confirmTitle}>
@@ -353,7 +353,7 @@ const RespondClassOffer = () => {
                   styles.confirmOk,
                   {
                     backgroundColor:
-                      confirmType === "accept" ? "#5B5BD6" : "#DC2626",
+                      confirmType === "accept" ? "#2563EB" : "#DC2626",
                   },
                 ]}
                 onPress={confirmType === "accept" ? doAccept : doReject}
@@ -378,7 +378,7 @@ const RespondClassOffer = () => {
 export default RespondClassOffer;
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#F3EEFF" },
+  safeArea: { flex: 1, backgroundColor: "#F5F8FF" },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -410,13 +410,13 @@ const styles = StyleSheet.create({
     borderColor: "#E5E7EB",
   },
   idLabel: { fontSize: 12, color: "#9CA3AF", marginBottom: 2 },
-  idValue: { fontSize: 16, fontWeight: "700", color: "#5B5BD6" },
+  idValue: { fontSize: 16, fontWeight: "700", color: "#2563EB" },
   chooseBlock: { alignItems: "center" },
   iconWrap: {
     width: 110,
     height: 110,
     borderRadius: 55,
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
@@ -438,7 +438,7 @@ const styles = StyleSheet.create({
   },
   actions: { width: "100%", gap: 12 },
   acceptBtn: {
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     paddingVertical: 16,
     borderRadius: 14,
     flexDirection: "row",

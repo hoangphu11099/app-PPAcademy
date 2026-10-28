@@ -1,3 +1,4 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
 import api from "@/src/api/axios";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -8,7 +9,6 @@ import {
   RefreshControl,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -266,7 +266,7 @@ const ViewTeachingSchedule = () => {
               ? "Tất cả"
               : normalizeDay(item).label.replace("Thứ ", "T");
           return (
-            <TouchableOpacity
+            <TouchableOpacity selected={Boolean(active)}
               style={[styles.dayChip, active && styles.dayChipOn]}
               onPress={() => setFilterDay(item)}>
               <Text

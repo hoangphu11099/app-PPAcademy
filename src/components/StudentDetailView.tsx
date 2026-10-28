@@ -1,3 +1,4 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
 import apiClient from "@/src/api/axios";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -9,7 +10,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -244,7 +244,7 @@ export default function StudentDetailView({
     return (
       <SafeAreaView style={styles.safe} edges={["top"]}>
         <View style={styles.center}>
-          <ActivityIndicator size="large" color="#5B5BD6" />
+          <ActivityIndicator size="large" color="#2563EB" />
           <Text style={styles.loadingText}>Đang tải hồ sơ sinh viên…</Text>
         </View>
       </SafeAreaView>
@@ -253,7 +253,7 @@ export default function StudentDetailView({
 
   return (
     <SafeAreaView style={styles.safe} edges={["top"]}>
-      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+      <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
         {showBack ? (
           <TouchableOpacity
@@ -273,7 +273,7 @@ export default function StudentDetailView({
             load();
           }}
           hitSlop={10}>
-          <Ionicons name="refresh" size={20} color="#5B5BD6" />
+          <Ionicons name="refresh" size={20} color="#2563EB" />
         </TouchableOpacity>
       </View>
 
@@ -286,8 +286,8 @@ export default function StudentDetailView({
               setRefreshing(true);
               load();
             }}
-            colors={["#5B5BD6"]}
-            tintColor="#5B5BD6"
+            colors={["#2563EB"]}
+            tintColor="#2563EB"
           />
         }>
         {!!error && (
@@ -426,7 +426,7 @@ function InfoRow({
   }
   return (
     <View style={styles.infoRow}>
-      <Ionicons name={icon} size={16} color="#5B5BD6" />
+      <Ionicons name={icon} size={16} color="#2563EB" />
       <Text style={styles.infoLabel}>{label}</Text>
       <Text style={styles.infoValue} numberOfLines={2}>
         {value}
@@ -436,7 +436,7 @@ function InfoRow({
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F3EEFF" },
+  safe: { flex: 1, backgroundColor: "#F5F8FF" },
   center: {
     flex: 1,
     justifyContent: "center",
@@ -490,7 +490,7 @@ const styles = StyleSheet.create({
     width: 72,
     height: 72,
     borderRadius: 36,
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 12,
@@ -563,12 +563,12 @@ const styles = StyleSheet.create({
     color: "#1A1A1A",
   },
   scorePill: {
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 10,
   },
-  scorePillText: { color: "#5B5BD6", fontWeight: "800", fontSize: 13 },
+  scorePillText: { color: "#2563EB", fontWeight: "800", fontSize: 13 },
   learnMeta: { fontSize: 12, color: "#6B7280", marginBottom: 4 },
   learnScores: { fontSize: 12, color: "#374151", fontWeight: "600" },
 });

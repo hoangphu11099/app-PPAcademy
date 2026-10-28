@@ -1,3 +1,5 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
 import {
   attendanceByQRAPI,
   getMyAttendancesAPI,
@@ -19,8 +21,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -191,7 +191,7 @@ const QrAttendance = () => {
   if (!permission) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#5B5BD6" />
+        <ActivityIndicator size="large" color="#2563EB" />
       </View>
     );
   }
@@ -199,7 +199,7 @@ const QrAttendance = () => {
   if (!permission.granted) {
     return (
       <SafeAreaView style={styles.permissionContainer}>
-        <Ionicons name="camera-outline" size={64} color="#5B5BD6" />
+        <Ionicons name="camera-outline" size={64} color="#2563EB" />
         <Text style={styles.permissionTitle}>Cần quyền Camera</Text>
         <Text style={styles.permissionText}>
           Ứng dụng cần camera để quét mã QR điểm danh
@@ -295,7 +295,7 @@ const QrAttendance = () => {
             style={styles.manualButton}
             onPress={() => setManualVisible(true)}
             activeOpacity={0.8}>
-            <Ionicons name="keypad-outline" size={18} color="#5B5BD6" />
+            <Ionicons name="keypad-outline" size={18} color="#2563EB" />
             <Text style={styles.manualButtonText}>Nhập mã thủ công</Text>
           </TouchableOpacity>
 
@@ -333,7 +333,7 @@ const QrAttendance = () => {
               }
               renderItem={({ item }) => (
                 <View style={styles.courseRow}>
-                  <Ionicons name="book-outline" size={18} color="#5B5BD6" />
+                  <Ionicons name="book-outline" size={18} color="#2563EB" />
                   <View style={{ flex: 1 }}>
                     <Text style={styles.courseName}>
                       {item.courseCode ? `${item.courseCode} · ` : ""}
@@ -395,14 +395,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F3EEFF",
+    backgroundColor: "#F5F8FF",
   },
   permissionContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 32,
-    backgroundColor: "#F3EEFF",
+    backgroundColor: "#F5F8FF",
   },
   permissionTitle: {
     fontSize: 20,
@@ -417,7 +417,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   permissionButton: {
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     paddingHorizontal: 24,
     paddingVertical: 14,
     borderRadius: 12,
@@ -531,7 +531,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     paddingVertical: 14,
   },
-  manualButtonText: { color: "#5B5BD6", fontWeight: "700", fontSize: 15 },
+  manualButtonText: { color: "#2563EB", fontWeight: "700", fontSize: 15 },
   rescanBtn: { alignItems: "center", marginTop: 12 },
   rescanText: {
     color: "#FFF",
@@ -591,7 +591,7 @@ const styles = StyleSheet.create({
   submitBtn: {
     marginHorizontal: 16,
     marginTop: 16,
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     borderRadius: 14,
     paddingVertical: 16,
     alignItems: "center",

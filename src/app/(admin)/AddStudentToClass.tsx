@@ -1,3 +1,5 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
 import apiClient from "@/src/api/axios";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -11,8 +13,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -199,7 +199,7 @@ const AddStudentToClass: React.FC = () => {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#5B5BD6" />
+        <ActivityIndicator size="large" color="#2563EB" />
       </View>
     );
   }
@@ -218,14 +218,13 @@ const AddStudentToClass: React.FC = () => {
             load();
           }}
           style={styles.back}>
-          <Ionicons name="refresh" size={20} color="#5B5BD6" />
+          <Ionicons name="refresh" size={20} color="#2563EB" />
         </TouchableOpacity>
       </View>
 
       <View style={styles.body}>
         <Text style={styles.hint}>
-          Chọn lớp đang học + SV đã có trong hệ thống. API: POST
-          /classes/:id/students {"{ studentIds }"}
+          Chọn lớp học và sinh viên cần bổ sung vào danh sách lớp.
         </Text>
 
         <Text style={styles.label}>Lớp học *</Text>
@@ -268,7 +267,7 @@ const AddStudentToClass: React.FC = () => {
                 setRefreshing(true);
                 load();
               }}
-              colors={["#5B5BD6"]}
+              colors={["#2563EB"]}
             />
           }
           ListEmptyComponent={
@@ -278,14 +277,14 @@ const AddStudentToClass: React.FC = () => {
             const on = selectedIds.has(item.id);
             const already = selectedClass && item.classId === selectedClass.id;
             return (
-              <TouchableOpacity
+              <TouchableOpacity selected={Boolean(on)}
                 style={[styles.row, on && styles.rowOn]}
                 onPress={() => toggle(item.id)}
                 activeOpacity={0.7}>
                 <Ionicons
                   name={on ? "checkbox" : "square-outline"}
                   size={22}
-                  color={on ? "#5B5BD6" : "#9CA3AF"}
+                  color={on ? "#2563EB" : "#9CA3AF"}
                 />
                 <View style={{ flex: 1, marginLeft: 10 }}>
                   <Text style={styles.rowTitle}>
@@ -369,12 +368,12 @@ const AddStudentToClass: React.FC = () => {
 export default AddStudentToClass;
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F3EEFF" },
+  safe: { flex: 1, backgroundColor: "#F5F8FF" },
   center: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F3EEFF",
+    backgroundColor: "#F5F8FF",
   },
   header: {
     flexDirection: "row",
@@ -394,8 +393,8 @@ const styles = StyleSheet.create({
   body: { flex: 1, padding: 16, paddingBottom: 20 },
   hint: {
     fontSize: 12.5,
-    color: "#5B5BD6",
-    backgroundColor: "#EDE9FE",
+    color: "#2563EB",
+    backgroundColor: "#EAF2FF",
     padding: 12,
     borderRadius: 12,
     marginBottom: 14,
@@ -436,12 +435,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E5E7EB",
   },
-  rowOn: { borderColor: "#5B5BD6", backgroundColor: "#F5F3FF" },
+  rowOn: { borderColor: "#2563EB", backgroundColor: "#EFF6FF" },
   rowTitle: { fontSize: 14, fontWeight: "600", color: "#1A1A1A" },
   rowSub: { fontSize: 12, color: "#9CA3AF", marginTop: 2 },
   empty: { textAlign: "center", color: "#9CA3AF", marginTop: 24 },
   btn: {
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     borderRadius: 14,
     paddingVertical: 16,
     alignItems: "center",

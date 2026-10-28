@@ -1,3 +1,4 @@
 export const env = {
-  apiBaseUrl: "http://192.168.1.224:8080",
+  apiBaseUrl: (process.env.EXPO_PUBLIC_API_URL || "http://192.168.1.69:8080").replace(/\/$/, ""),
+  websiteBaseUrl: (process.env.EXPO_PUBLIC_WEBSITE_URL || "http://192.168.1.69:5173").replace(/\/$/, ""),
 };

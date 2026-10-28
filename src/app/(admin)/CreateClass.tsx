@@ -1,3 +1,5 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
 import apiClient from "@/src/api/axios";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -13,8 +15,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -339,7 +339,7 @@ const CreateClass: React.FC = () => {
 export default CreateClass;
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F3EEFF" },
+  safe: { flex: 1, backgroundColor: "#F5F8FF" },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -358,8 +358,8 @@ const styles = StyleSheet.create({
   scroll: { padding: 20, paddingBottom: 40 },
   hint: {
     fontSize: 12.5,
-    color: "#5B5BD6",
-    backgroundColor: "#EDE9FE",
+    color: "#2563EB",
+    backgroundColor: "#EAF2FF",
     padding: 12,
     borderRadius: 12,
     marginBottom: 16,
@@ -397,7 +397,7 @@ const styles = StyleSheet.create({
   },
   resultTitle: { fontWeight: "700", color: "#059669", marginBottom: 4 },
   btn: {
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     borderRadius: 14,
     paddingVertical: 16,
     alignItems: "center",

@@ -1,3 +1,5 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
+import { GlowTextInput as TextInput } from "@/src/components/GlowTextInput";
 import apiClient from "@/src/api/axios";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect, useRouter } from "expo-router";
@@ -11,8 +13,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -130,14 +130,14 @@ export default function Rooms() {
         </TouchableOpacity>
         <Text style={styles.title}>Phòng học</Text>
         <TouchableOpacity style={styles.iconBtn} onPress={openCreate}>
-          <Ionicons name="add-circle" size={24} color="#5B5BD6" />
+          <Ionicons name="add-circle" size={24} color="#2563EB" />
         </TouchableOpacity>
       </View>
 
       {loading ? (
         <ActivityIndicator
           style={{ marginTop: 40 }}
-          color="#5B5BD6"
+          color="#2563EB"
           size="large"
         />
       ) : (
@@ -152,7 +152,7 @@ export default function Rooms() {
                 setRefreshing(true);
                 load();
               }}
-              colors={["#5B5BD6"]}
+              colors={["#2563EB"]}
             />
           }
           ListEmptyComponent={
@@ -167,7 +167,7 @@ export default function Rooms() {
               activeOpacity={0.8}
               onPress={() => openEdit(item)}>
               <View style={styles.icon}>
-                <Ionicons name="home-outline" size={20} color="#5B5BD6" />
+                <Ionicons name="home-outline" size={20} color="#2563EB" />
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={styles.name}>{item.name}</Text>
@@ -248,7 +248,7 @@ export default function Rooms() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F3EEFF" },
+  safe: { flex: 1, backgroundColor: "#F5F8FF" },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   saveBtn: {
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     borderRadius: 14,
     paddingVertical: 14,
     alignItems: "center",

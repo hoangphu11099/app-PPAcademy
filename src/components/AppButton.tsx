@@ -1,10 +1,10 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
 import React from "react";
 import {
   ActivityIndicator,
   StyleSheet,
   Text,
-  TouchableOpacity,
-} from "react-native";
+  } from "react-native";
 import Colors from "../theme/colors";
 
 interface Props {

@@ -1,3 +1,4 @@
+import { GlowTouchableOpacity as TouchableOpacity } from "@/src/components/GlowTouchableOpacity";
 import apiClient from "@/src/api/axios";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
@@ -10,7 +11,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -160,7 +160,7 @@ const AcceptClassOffer = () => {
       console.error("AcceptClassOffer fetch:", err);
       setError(
         err?.response?.data?.message ||
-          "Không tải được lời mời. Kiểm tra mạng / backend.",
+          "Không thể tải đề nghị giảng dạy. Vui lòng kiểm tra kết nối mạng và thử lại.",
       );
       // Vẫn giữ id từ URL để có thể thử accept
       if (paramId) {
@@ -234,7 +234,7 @@ const AcceptClassOffer = () => {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#5B5BD6" />
+        <ActivityIndicator size="large" color="#2563EB" />
         <Text style={styles.loadingText}>Đang tải lời mời mới nhất...</Text>
       </View>
     );
@@ -242,7 +242,7 @@ const AcceptClassOffer = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" backgroundColor="#F3EEFF" />
+      <StatusBar barStyle="dark-content" />
 
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
@@ -250,7 +250,7 @@ const AcceptClassOffer = () => {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Lời mời nhận lớp</Text>
         <TouchableOpacity onPress={onRefresh} style={styles.backBtn}>
-          <Ionicons name="refresh" size={22} color="#5B5BD6" />
+          <Ionicons name="refresh" size={22} color="#2563EB" />
         </TouchableOpacity>
       </View>
 
@@ -260,13 +260,13 @@ const AcceptClassOffer = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={["#5B5BD6"]}
-            tintColor="#5B5BD6"
+            colors={["#2563EB"]}
+            tintColor="#2563EB"
           />
         }>
         {/* Banner: luôn là lời mời mới nhất */}
         <View style={styles.banner}>
-          <Ionicons name="notifications" size={18} color="#5B5BD6" />
+          <Ionicons name="notifications" size={18} color="#2563EB" />
           <Text style={styles.bannerText}>
             Hiển thị lời mời phân công mới nhất từ admin
           </Text>
@@ -292,7 +292,7 @@ const AcceptClassOffer = () => {
               <Ionicons
                 name={isPending ? "mail-unread" : "checkmark-circle"}
                 size={64}
-                color={isPending ? "#5B5BD6" : "#059669"}
+                color={isPending ? "#2563EB" : "#059669"}
               />
             </View>
 
@@ -351,7 +351,7 @@ const AcceptClassOffer = () => {
             {submitting ? (
               <ActivityIndicator
                 size="large"
-                color="#5B5BD6"
+                color="#2563EB"
                 style={{ marginTop: 24 }}
               />
             ) : isPending ? (
@@ -399,12 +399,12 @@ const AcceptClassOffer = () => {
 export default AcceptClassOffer;
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#F3EEFF" },
+  safeArea: { flex: 1, backgroundColor: "#F5F8FF" },
   center: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F3EEFF",
+    backgroundColor: "#F5F8FF",
   },
   loadingText: { marginTop: 12, color: "#6B7280", fontSize: 14 },
   header: {
@@ -438,14 +438,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
     paddingHorizontal: 14,
     paddingVertical: 10,
     borderRadius: 12,
     marginBottom: 20,
     width: "100%",
   },
-  bannerText: { flex: 1, fontSize: 12, color: "#5B5BD6", fontWeight: "600" },
+  bannerText: { flex: 1, fontSize: 12, color: "#2563EB", fontWeight: "600" },
   errorBox: {
     backgroundColor: "#FEF2F2",
     borderRadius: 12,
@@ -473,7 +473,7 @@ const styles = StyleSheet.create({
     width: 110,
     height: 110,
     borderRadius: 55,
-    backgroundColor: "#EDE9FE",
+    backgroundColor: "#EAF2FF",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
@@ -520,7 +520,7 @@ const styles = StyleSheet.create({
   },
   actions: { width: "100%", gap: 12 },
   acceptBtn: {
-    backgroundColor: "#5B5BD6",
+    backgroundColor: "#2563EB",
     paddingVertical: 16,
     borderRadius: 14,
     flexDirection: "row",
